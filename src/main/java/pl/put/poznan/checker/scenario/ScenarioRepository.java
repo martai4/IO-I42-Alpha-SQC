@@ -25,5 +25,7 @@ public class ScenarioRepository {
         return scenarios.get(id);
     }
 
-
+    public Map<Integer, Scenario> getScenarios() {
+        return scenarios;
+    }
 }
