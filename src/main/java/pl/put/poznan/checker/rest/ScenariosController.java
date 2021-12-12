@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class ScenariosController {
     private ScenarioRepository scenarioRepository = new ScenarioRepository();
 
-    @PostMapping("/add")
+    @PostMapping("/")
     public Integer addScenario(@RequestBody Scenario scenario) {
         return scenarioRepository.saveScenario(scenario);
     }
@@ -39,7 +39,7 @@ public class ScenariosController {
         return ResponseEntity.ok(scenarios);
     }
 
-    @GetMapping("/getScenarioByName/{name}")
+    @GetMapping("/byName/{name}")
     public ResponseEntity<Scenario> getScenarioByName(@PathVariable("name") String name) {
         for (var key : scenarioRepository.getScenarios().keySet()) {
             Scenario act = scenarioRepository.getScenarios().get(key);
