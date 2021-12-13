@@ -9,6 +9,10 @@ public class Scenario {
 
     public Scenario(){}
 
+    public void HowManyDecisions(){
+        System.out.println(main.HowManyDecisions());
+    }
+
     public String getName() {
         return name;
     }
