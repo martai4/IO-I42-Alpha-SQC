@@ -1,5 +1,6 @@
 package pl.put.poznan.checker.scenario;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Scenario {
