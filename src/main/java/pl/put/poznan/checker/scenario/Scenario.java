@@ -13,6 +13,14 @@ public class Scenario {
         System.out.println(main.HowManyDecisions());
     }
 
+    public void ShowActorsErrors(){
+        List<String> odpowiedz=new ArrayList<>();
+        odpowiedz=main.ListNoActorsErrors(actors);
+        for (String s : odpowiedz) {
+            System.out.println(s);
+        }
+    }
+
     public String getName() {
         return name;
     }
