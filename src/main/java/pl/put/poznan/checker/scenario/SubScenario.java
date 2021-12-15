@@ -1,5 +1,8 @@
 package pl.put.poznan.checker.scenario;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,12 +12,11 @@ import java.util.List;
  * @author I42-Alpha
  * @version 1.0
  */
-public class SubScenario {
+public class SubScenario
+{
+    private static final Logger logger = LoggerFactory.getLogger(SubScenario.class);
+    private List<Step> steps = new ArrayList<>();
 
-    private final List<Step> steps = new ArrayList<>();
-    //todo: uzgodnić, czy te gettery i settery są potrzebne, gdy mamy dostęp do listy za pomocą innych metod, których
-    //todo: zaletą jest (będzie) obsługa błędów
-    /*
     public List<Step> getSteps() {
         return steps;
     }
@@ -22,24 +24,32 @@ public class SubScenario {
     public void setSteps(List<Step> stepsList) {
         this.steps = stepsList;
     }
-    */
 
-    //todo: sprawdzić błędy (próba dostania się do elementu poza zakresem)
     /**
      * Zwraca wybrany krok podscenariusza
      * @param index indeks kroku
      * @return krok
      */
     public Step getStep(Integer index) {
+        if (index >= getLength())
+        {
+            logger.warn("getStep(Integer index) próbował zwrócić nieistniejący element o indeksie " + index.toString());
+            return null;
+        }
         return steps.get(index);
     }
-    //todo: sprawdzić błędy (próba dostania się do elementu poza zakresem)
     /**
      * Nadpisuje wybrany krok scenariusza
      * @param index indeks kroku, który zostanie nadpisany
      * @param step nowy krok
      */
     public void setStep(Integer index, Step step) {
+        if (index >= getLength())
+        {
+            logger.warn("setStep(Integer index, Step step) próbował nadpisać nieistniejący element o indeksie "
+                    + index.toString());
+            return;
+        }
         this.steps.set(index, step);
     }
     /**

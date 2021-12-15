@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"pl.put.poznan.checker.app"},{"l":"pl.put.poznan.checker.debug"},{"l":"pl.put.poznan.checker.logic"},{"l":"pl.put.poznan.checker.rest"},{"l":"pl.put.poznan.checker.scenario"}];updateSearchResults();

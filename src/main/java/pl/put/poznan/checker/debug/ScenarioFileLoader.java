@@ -22,17 +22,29 @@ import java.util.List;
 public class ScenarioFileLoader {
     private static final Logger logger = LoggerFactory.getLogger(ScenarioFileLoader.class);
     //Poniżej znajdują się przełączniki i słowa kluczowe dotyczące formatu wczytywanego pliku tekstowego
-    private static final Boolean bIgnoreExcessWhitechars = true; //przełącznik ignorowania białych znaków, jeżeli
-    //jest ich za dużo, a nie powinno po słowie kluczowym np. "Tytuł:    jakaś   nazwa"
-    //Gdy bIgnoreExcessWhitechars = true,   wczytany tytuł to "jakaś   nazwa"
-    //Gdy bIgnoreExcessWhitechars = false,  wczytany tytuł to "   jakaś   nazwa"
+    /**
+     Przełącznik ignorowania białych znaków, jeżeli jest ich za dużo po słowie kluczowym lub
+     po znaku sperataora poziomów zagłębień (numeracji) np. dla "Tytuł:    jakaś   nazwa":<br>
+     Gdy bIgnoreExcessWhitechars = true,   wczytany tytuł to "jakaś   nazwa"<br>
+     Gdy bIgnoreExcessWhitechars = false,  wczytany tytuł to "   jakaś   nazwa"
+     */
+    public static Boolean bIgnoreExcessWhitechars = true;
+    /**
+     * Decyduje, czy kroki na najwyższym poziomie muszą zaczynać się od znaku separatora poziomów zagłębienia
+     * <br>
+     * True:<br>
+     * - Pierwszy krok<br>
+     * False:<br>
+     * Pierwszy krok
+     */
+    public static Boolean bStartWithDelim = true;
     //todo: wczytywać numerację zamiast tego, chyba że wymogiem będzie wspierać wczytywanie plików pochodzących z innych
     //todo: źródeł niż output naszego programu
-    private static final String delim = "-"; //Wyznacza poziom zagłębień
+    public static String delim = "-"; //Wyznacza poziom zagłębień
     private static final List<String> keywords = Arrays.asList("FOR EACH", "IF", "ELSE");
-    private static final String titleFormat = "Tytuł:";
-    private static final String actorFormat = "Aktorzy:";
-    private static final String systemActorFormat = "Aktor systemowy:";
+    private static final String titleFormat = "Tytuł: ";
+    private static final String actorFormat = "Aktorzy: ";
+    private static final String systemActorFormat = "Aktor systemowy: ";
     /**
      * Dodatkowy enum, który ułatwi rozszerzanie przetwarzania plików o dodatkową funkcjonalność np. możliwość dzielenia
      * listy aktorów na kilku liniach <br>
@@ -45,9 +57,9 @@ public class ScenarioFileLoader {
      * @return wypełniony obiekt typu <code>Scenario</code>
      * @throws IOException błąd przetwarzania pliku tekstowego (systemowy)
      * */
-    public Scenario loadScenario(String path) throws IOException
+    public static Scenario loadScenario(String path) throws IOException
     {
-        logger.debug("[DEBUG] [pl.put.poznan.checker.logic.ScenarioQualityChecker.loadScenario] próbuje wczytać scenariusz");
+        logger.debug("loadScenario(String path) próbuje wczytać scenariusz");
         Scenario ret = new Scenario();
         FileReader scenarioFile = null;
         BufferedReader buffer = null;
@@ -59,24 +71,19 @@ public class ScenarioFileLoader {
         }
         catch (IOException e)
         {
-            logger.error("[ERROR] [pl.put.poznan.checker.logic.ScenarioQualityChecker.loadScenario] błąd oczytu z pliku");
+            logger.error("loadScenario(String path): błąd odczytu z pliku");
             throw e;
         }
 
         //Informacje ogólne o scenariuszu
-        int informacje = 0;
+        Integer informacje = 0;
 
         ReadMode readMode = ReadMode.NONE;
-        //todo: dodać dodatkowe pytania:
-        //
-        //
-        //
-        while (informacje != 3) {
+        while (informacje.compareTo(3) != 0) {
             String buf = buffer.readLine();
             //Koniec pliku?
             if (buf == null) {
-                //todo: warn
-                logger.warn("");
+                logger.error("loadScenario(String path) przedwczesny koniec pliku, udało się przetworzyć " + informacje.toString() + " słów kluczowych");
                 return null;
             }
             if (buf.isBlank())
@@ -89,52 +96,52 @@ public class ScenarioFileLoader {
             if (buf.indexOf(titleFormat) == 0) {
                 readMode = ReadMode.TITLE;
                 ++informacje;
-            } else if (buf.equals(actorFormat)) {
+            } else if (buf.indexOf(actorFormat) == 0) {
                 readMode = ReadMode.ACTOR;
                 ++informacje;
-            } else if (buf.equals(systemActorFormat)) {
+            } else if (buf.indexOf(systemActorFormat) == 0) {
                 readMode = ReadMode.SYSTEM_ACTOR;
                 ++informacje;
             }
             //Odpowiada za przetwarzanie danych
             switch (readMode) {
                 case TITLE:
-                    String title;
+                    if (buf.isBlank())
+                        break;
+
                     if (buf.indexOf(titleFormat) == 0)
-                        title = buf.substring(titleFormat.length());
-                    else
-                        title = buf;
+                        buf = buf.substring(titleFormat.length());
                     if (bIgnoreExcessWhitechars)
                         while (Character.isWhitespace(buf.charAt(0)))
-                            title = title.substring(1);
-                    ret.setName(ret.getName() + title);
+                            buf = buf.substring(1);
+                    ret.setName(((ret.getName() == null) ? "" : ret.getName()) + buf);
                     break;
                 case ACTOR:
-                    String actors;
+                    if (buf.isBlank())
+                        break;
+
                     if (buf.indexOf(actorFormat) == 0)
-                        actors = buf.substring(actorFormat.length());
-                    else
-                        actors = buf;
-                    while (!actors.isBlank()) {
-                        int separatorPos = Math.min(actors.indexOf(' '), actors.indexOf('\t')); //todo: sprawdzić, czy '\t' ma w ogóle sens
-                        String actor = buf.substring(0, separatorPos);
+                        buf = buf.substring(actorFormat.length());
+
+                    for (String actor : buf.split(" +")) {
+                        if (actor.isBlank())
+                            continue;
                         if (bIgnoreExcessWhitechars)
-                            while (Character.isWhitespace(buf.charAt(0)))
+                            while (Character.isWhitespace(actor.charAt(0)))
                                 actor = actor.substring(1);
                         ret.addActor(actor);
-                        actors = actor.substring(separatorPos + 1);
                     }
                     break;
                 case SYSTEM_ACTOR:
-                    String systamActor;
+                    if (buf.isBlank())
+                        break;
+
                     if (buf.indexOf(systemActorFormat) == 0)
-                        systamActor = buf.substring(systemActorFormat.length());
-                    else
-                        systamActor = buf;
+                        buf = buf.substring(systemActorFormat.length());
                     if (bIgnoreExcessWhitechars)
                         while (Character.isWhitespace(buf.charAt(0)))
-                            systamActor = systamActor.substring(1);
-                    ret.setSystemActor(ret.getSystemActor() + systamActor);
+                            buf = buf.substring(1);
+                    ret.setSystemActor(((ret.getSystemActor() == null) ? "" : ret.getSystemActor()) + buf);
                     break;
             }
         }
@@ -144,10 +151,9 @@ public class ScenarioFileLoader {
         ret.setMain(subScenario);
 
         //Przetwarzanie dzieje się tutaj
-        loadSubScenario(buffer, subScenario, 0);
+        loadSubScenario(buffer, subScenario, bStartWithDelim ? 1 : 0);
 
-        logger.debug("[DEBUG] [pl.put.poznan.checker.logic.ScenarioQualityChecker.loadScenario] pomyślnie wczytano" +
-                " scenariusz \"" + ret.getName() + '\"' );
+        logger.debug("loadScenario(String path) pomyślnie wczytano scenariusz \"" + ret.getName() + '\"' );
         return ret;
     }
 
@@ -158,32 +164,48 @@ public class ScenarioFileLoader {
      * podscenariusza i do niego nie należy, więc trzeba przypisać go tam, gdzie powinien się znaleźć
      * @throws IOException błąd przetwarzania pliku tekstowego (systemowy)
      * */
-    private String loadSubScenario(BufferedReader reader, SubScenario subScenario, Integer subScenarioLevel)
+    private static String loadSubScenario(BufferedReader reader, SubScenario subScenario, Integer subScenarioLevel)
             throws IOException
     {
+        String step = null;
+        boolean bRead = true;
         while (true)
         {
-            String step;
-            try
-            {
-                step = reader.readLine();
+            if (bRead) {
+                try {
+                    step = reader.readLine();
+                } catch (IOException e) {
+                    logger.error("loadScenario(String path) błąd odczytu pliku\"");
+                    throw e;
+                }
             }
-            catch (IOException e)
-            {
-                throw e;
-            }
+            bRead = true; //reset
             //Koniec pliku tekstowego
+            //Pozbbycie się białych znaków
             if (step == null)
                 return null;
+            if (step.isBlank())
+                continue;
             //Sprawdzamy poziom zagłębienia kroku
-            //Dopóki pierwszy znak jest równy [delimiter], ucinamy go i zwiększamy poziom zagłębienia
+            //Dopóki pierwszy znak jest równy [delim], ucinamy go i zwiększamy poziom zagłębienia
             String stepText = step;
             Integer level = 0;
-            while (stepText.indexOf(delim) == 0)
+
+            while (Character.isWhitespace(step.charAt(0)))
+                step = step.substring(1);
+
+            for (;stepText.indexOf(delim) == 0; ++level)
+                stepText = stepText.substring(1);
+
+            if (step.isBlank())
             {
-                stepText = stepText.substring(stepText.length());
-                ++level;
+                logger.warn("loadScenario(String path) pusty krok!");
+                continue;
             }
+
+            if (bIgnoreExcessWhitechars)
+                while (Character.isWhitespace(stepText.charAt(0)))
+                    stepText = stepText.substring(1);
 
             //Jeżeli musielibyśmy sprawdzić, czy nie wystąpiło słowo kluczowe, to można zrobić to tak
             //for (String keyword : keywords)
@@ -195,50 +217,32 @@ public class ScenarioFileLoader {
             //Rekurencyjnie wracamy do scenariusza o podanym poziomie
             if (level < subScenarioLevel)
                 return step;
-            //Tworzymy podscenariusz!
+
             if (level.equals(subScenarioLevel))
                 subScenario.addStep(stepText);
+                //Tworzymy podscenariusz!
             else
             {
                 //Poziom zagłębienia może być tylko o jeden większy!
                 if ((level - subScenarioLevel) > 1)
                 {
-                    // throw ;
+                    logger.error("loadScenario(String path) niepoprawnie zapisany plik Scenariusz: niekonsystentne" +
+                            "poziomy zagłębień. Krok powodujący błąd:\n " + step);
+                    return null;
                 }
                 //Nowy podscenariusz trzeba powiązać z ostatnim krokiem obecnego podscenariusza
-                SubScenario nextSubScenario = new SubScenario();
-                subScenario.getStep(subScenario.getLength() - 1).setChild(nextSubScenario);
-
+                SubScenario nextSubScenario = subScenario.getStep(subScenario.getLength() - 1).getChild();
+                if (nextSubScenario == null) {
+                    nextSubScenario = new SubScenario();
+                    subScenario.getStep(subScenario.getLength() - 1).setChild(nextSubScenario);
+                }
+                nextSubScenario.addStep(stepText);
                 //Zamiast tego możemy skorzystać z innego rodzaju strumienia do zczytywania danych z pliku
                 //PushbackInputStream pozwala "cofnąć" ostatni odczyt
                 //Tak naprawdę z powrotem wpychalibyśmy do niego te same znaki, które właśnie odczytaliśmy
                 //Jeżeli uważacie, że ten zapis jest nieczytelny, to można to zmienić
-                String unprocessedStep = loadSubScenario(reader, nextSubScenario, level);
-                if (unprocessedStep == null)
-                    return null;
-
-                //Powtarzamy zbieranie poziomu kroku
-                //Tym razem tego kroku, które zwróciło rekurencyjne wywołanie loadSubScenario
-                String unprocessedStepText = unprocessedStep;
-                int unprocessedLevel = 0;
-                while (unprocessedStepText.indexOf(delim) == 0)
-                {
-                    unprocessedStepText = unprocessedStepText.substring(unprocessedStepText.length());
-                    ++unprocessedLevel;
-                }
-                //Teraz mamy pewność, że poziom unprocessedLevel jest <= poziomu obecnie przetwarzanego podscenariusza
-                //Inaczej stworzyłby się kolejny podscenariusz w rekurencyjnym wywołaniu loadSubScenario i ono zwróciło
-                //by nam krok null albo o poziomie niższym niż subScenarioLevel
-                //Musimy sprawdzić, czy poziomy są sobie równe, wtedy krok trzeba dodać do obecnego podscenariusza
-                //Jeżeli jest mniejszy, to trzeba go dodać do podscenariusza wyżej
-                if (unprocessedLevel < subScenarioLevel)
-                {
-                    return unprocessedStepText;
-                }
-                else
-                {
-                    subScenario.addStep(unprocessedStepText);
-                }
+                step = loadSubScenario(reader, nextSubScenario, level);
+                bRead = false;
             }
         }
     }

@@ -1,7 +1,8 @@
 package pl.put.poznan.checker.scenario;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Component
 public class ScenarioRepository
 {
+    private static final Logger logger = LoggerFactory.getLogger(ScenarioRepository.class);
     //private final Map<Integer, Scenario> scenarios = new ConcurrentHashMap<>(); //todo: czy to powinien być słownik?
     private final List<Scenario> scenarios = new ArrayList<>();
     //private final AtomicInteger lastGeneratedId = new AtomicInteger(0);
@@ -35,7 +37,7 @@ public class ScenarioRepository
      * Zwraca rozmiar repozytorium
      * @return rozmiar
      */
-    public Integer getSize()
+    public Integer getLength()
     {
         return scenarios.size();
     }
@@ -46,9 +48,9 @@ public class ScenarioRepository
      * @return scenariusz
      */
     public Scenario getScenario(Integer id) {
-        if (id >= getSize())
+        if (id >= getLength())
         {
-            //todo: error
+            logger.warn("getScenario(Integer id) próbował zwrócić nieistniejący scenariusz o numerze " + id.toString());
             return null;
         }
         return scenarios.get(id);
@@ -60,7 +62,11 @@ public class ScenarioRepository
      * @return scenariusz
      */
     public Scenario getScenarioByName(String name) {
-        return scenarios.stream().filter(scenario -> scenario.getName().equals(name)).findFirst().get();
+        if (scenarios.stream().anyMatch(scenario -> scenario.getName().equals(name)))
+            return scenarios.stream().filter(scenario -> scenario.getName().equals(name)).findFirst().get();
+        logger.warn("getScenarioByName(String name) próbował zwrócić nieistniejący scenariusz o nazwie \""
+                + name.toString() + "\"");
+        return null;
     }
 
     public List<Scenario> getScenarios() {

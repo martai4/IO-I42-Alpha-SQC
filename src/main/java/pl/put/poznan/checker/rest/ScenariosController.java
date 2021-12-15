@@ -18,8 +18,7 @@ public class ScenariosController {
 
     @PostMapping("/")
     public void addScenario(@RequestBody Scenario scenario) {
-        logger.debug("[DEBUG] [pl.put.poznan.checker.rest.ScenariosController.addScenario] próbuje dodać " +
-                "scenariusz: " + scenario.getName() );
+        logger.info("addScenario(Scenario scenario) próbuje dodać scenariusz: " + scenario.getName() );
         scenarioRepository.addScenario(scenario);
     }
 
@@ -29,14 +28,13 @@ public class ScenariosController {
 
         if (scenario == null)
         {
-            logger.warn("[WARN] [pl.put.poznan.checker.rest.ScenariosController.getScenario] próbował zwrócić " +
-                    "nieistniejący scenariusz o numerze " + id.toString());
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            logger.warn("getScenario(Integer id) próbował zwrócić nieistniejący scenariusz o numerze " + id.toString());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         else
         {
-            logger.debug("[DEBUG] [pl.put.poznan.checker.rest.ScenariosController.getScenario] próbuje zwrócić " +
-                    "scenariusz o numerze " + id.toString() + " i nazwie \"" + scenario.getName() + "\"" );
+            logger.info("getScenario(Integer id) zwraca scenariusz o numerze " + id.toString() + " i nazwie \""
+                    + scenario.getName() + "\"" );
             return ResponseEntity.ok(scenario);
         }
     }
@@ -59,8 +57,9 @@ public class ScenariosController {
     @GetMapping("/byName/{name}")
     public ResponseEntity<Scenario> getScenarioByName(@PathVariable("name") String name) {
         Scenario act = scenarioRepository.getScenarioByName(name);
-        if (act == null)
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        if (act == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return ResponseEntity.ok(act);
     }
 }
