@@ -12,4 +12,4 @@ jobs:
           distribution: 'adopt'
           cache: maven
       - name: Validate, build and run tests
-        run: mvn --batch-mode --update-snapshots package
+        run: mvn --batch-mode --update-snapshots verify
