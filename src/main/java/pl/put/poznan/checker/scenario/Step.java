@@ -1,6 +1,6 @@
 package pl.put.poznan.checker.scenario;
 
-public class Step {
+public class Step implements VisitableElement{
     private String text;
     private SubScenario child;
 
@@ -18,5 +18,10 @@ public class Step {
 
     public void setChild(SubScenario child) {
         this.child = child;
+    }
+
+    @Override
+    public Visitor acceptVisitor(Visitor visitor) {
+        return visitor.visit(this);
     }
 }

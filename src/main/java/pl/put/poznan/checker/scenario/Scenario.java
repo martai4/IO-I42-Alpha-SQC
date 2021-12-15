@@ -2,9 +2,10 @@ package pl.put.poznan.checker.scenario;
 
 import java.util.List;
 
-public class Scenario {
+public class Scenario implements VisitableElement {
     private String name;
     private List<String> actors;
+    private String systemActor;
     private SubScenario main;
 
     public Scenario(){}
@@ -31,5 +32,14 @@ public class Scenario {
 
     public void setMain(SubScenario main) {
         this.main = main;
+    }
+
+    public String getSystemActor() { return systemActor; }
+
+    public void setSystemActor(String systemActor) { this.systemActor = systemActor; }
+
+    @Override
+    public Visitor acceptVisitor(Visitor visitor) {
+        return visitor.visit(this);
     }
 }
