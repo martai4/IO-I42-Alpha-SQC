@@ -42,7 +42,7 @@ public class ScenarioFileLoader {
     //todo: źródeł niż output naszego programu
     public static String delim = "-"; //Wyznacza poziom zagłębień
     private static final List<String> keywords = Arrays.asList("FOR EACH", "IF", "ELSE");
-    private static final String titleFormat = "Tytuł:";
+    private static final String titleFormat = "Tytuł: ";
     private static final String actorFormat = "Aktorzy: ";
     private static final String systemActorFormat = "Aktor systemowy: ";
     /**
