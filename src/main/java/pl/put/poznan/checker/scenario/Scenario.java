@@ -10,11 +10,12 @@ import java.util.List;
  * @version 1.0
  */
 public class Scenario {
-    private String name;
-    private List<String> actors = new ArrayList<>();
-    private String systemActor;
-    private SubScenario main;
 
+    private String name; /** Tytuł scenariusza */
+    private final List<String> actors = new ArrayList<>();
+    private String systemActor;
+    /** Zawartość scenariusza znajduje się w obiekcie klasy SubScenario, nawet jeżeli ten nie posiada podscenariuszy */
+    private SubScenario main;
     public String getName() {
         return name;
     }
@@ -35,8 +36,9 @@ public class Scenario {
 
     //todo: sprawdzić błędy (próba dostania się do elementu poza zakresem)
     /**
+     * Zwraca aktora z listy aktorów scenariusza
      * @param index numer aktora, którego chcemy zwrócić. Aktorzy są numerowani w kolejności wprowadzenia
-     * @return zwraca nazwę aktora z listy wszystkich aktorów
+     * @return nazwa aktora
      */
     public String getActor(Integer index) {
         return actors.get(index);
@@ -44,18 +46,24 @@ public class Scenario {
 
     //todo: sprawdzić błędy (próba dostania się do elementu poza zakresem)
     /**
-     * @param index numer aktora, którego chcemy zwrócić. Aktorzy są numerowani w kolejności wprowadzenia
-     * @param actor nazwa aktora, który zostanie dodany pod wskazany index
+     * Nadpisuje wybranego aktora w liście aktorów
+     * @param index indeks aktora, który zostanie ndapisany
+     * @param actor nowa nazwa aktora
      */
     public void setActor(Integer index, String actor) { actors.set(index, actor);
     }
 
     /**
-     * @param actor nazwa aktora, który zostanie dodany na koniec listy
+     * Dodaje aktora na koniec listy aktorów
+     * @param actor nazwa aktora
      */
     public void addActor(String actor) { actors.add(actor);
     }
 
+    /**
+     * Zwraca rozmiar listy aktorów
+     * @return rozmiar
+     */
     public Integer getActorsCount() {
         return actors.size();
     }

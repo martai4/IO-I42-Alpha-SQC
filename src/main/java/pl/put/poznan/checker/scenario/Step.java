@@ -7,7 +7,11 @@ package pl.put.poznan.checker.scenario;
  * @version 1.0
  */
 public class Step {
+
     private String text;
+    /**
+     * Podscenariusz powiązany z krokiem
+     */
     private SubScenario child;
 
     /**
@@ -32,30 +36,18 @@ public class Step {
         this.text = stepText; this.child = stepChild;
     }
 
-    /**
-     * @return zawartość kroku
-     */
     public String getText() {
         return text;
     }
 
-    /**
-     * @param text zawartość kroku
-     */
     public void setText(String text) {
         this.text = text;
     }
 
-    /**
-     * @return podscenariusz powiązany z krokiem
-     */
     public SubScenario getChild() {
         return child;
     }
 
-    /**
-     * @param child podscenariusz powiązany z krokiem
-     */
     public void setChild(SubScenario child) {
         this.child = child;
     }
