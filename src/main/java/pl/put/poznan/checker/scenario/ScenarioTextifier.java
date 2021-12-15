@@ -2,6 +2,13 @@ package pl.put.poznan.checker.scenario;
 
 public class ScenarioTextifier implements Visitor{
 
+    /**
+     * Wizytator tworzący tekst scenariusza
+     *
+     * @author I42-Alpha
+     * @version 1.0
+     */
+
     private Integer depth;
     private String text;
     private String stepPrefix;
@@ -29,7 +36,8 @@ public class ScenarioTextifier implements Visitor{
         this.text = this.text.concat("\n");
         if(scenario.getSystemActor()!=null) this.text=this.text.concat("Aktor Systemowy: " + scenario.getSystemActor() + "\n");
         this.text = this.text.concat("\n");
-        return scenario.getMain().acceptVisitor(this);
+        if(scenario.getMain()!=null)scenario.getMain().acceptVisitor(this);
+        return this;
     }
 
     @Override
