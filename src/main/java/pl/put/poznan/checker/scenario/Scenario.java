@@ -12,7 +12,7 @@ import java.util.List;
  * @author I42-Alpha
  * @version 1.1
  */
-public class Scenario {
+public class Scenario implements VisitableElement {
     private static final Logger logger = LoggerFactory.getLogger(Scenario.class);
     private String name; /** Tytuł scenariusza */
     private List<String> actors = new ArrayList<>();
@@ -94,5 +94,10 @@ public class Scenario {
 
     public void setMain(SubScenario main) {
         this.main = main;
+    }
+
+    @Override
+    public Visitor acceptVisitor(Visitor visitor) {
+        return visitor.visit(this);
     }
 }

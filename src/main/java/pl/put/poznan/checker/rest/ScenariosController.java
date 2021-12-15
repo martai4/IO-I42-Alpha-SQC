@@ -7,6 +7,7 @@ import pl.put.poznan.checker.scenario.Scenario;
 import pl.put.poznan.checker.scenario.ScenarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.put.poznan.checker.scenario.ScenarioTextifier;
 
 import java.util.HashMap;
 
@@ -61,5 +62,19 @@ public class ScenariosController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(act);
+    }
+
+    @GetMapping("/text/{id}")
+    public ResponseEntity<String> getTextifiedScenario(@PathVariable("id") Integer id){
+        var scenario = scenarioRepository.getScenario(id);
+        var textifier = new ScenarioTextifier();
+        if (scenario == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } else {
+            scenario.acceptVisitor(textifier);
+            System.out.println("Scenario textified " + id + ":");
+            System.out.println(textifier.getText());
+            return ResponseEntity.ok(textifier.getText());
+        }
     }
 }

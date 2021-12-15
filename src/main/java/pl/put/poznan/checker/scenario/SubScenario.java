@@ -12,7 +12,7 @@ import java.util.List;
  * @author I42-Alpha
  * @version 1.0
  */
-public class SubScenario
+public class SubScenario implements VisitableElement
 {
     private static final Logger logger = LoggerFactory.getLogger(SubScenario.class);
     private List<Step> steps = new ArrayList<>();
@@ -72,5 +72,10 @@ public class SubScenario
      */
     public Integer getLength() {
         return steps.size();
+    }
+
+    @Override
+    public Visitor acceptVisitor(Visitor visitor) {
+        return visitor.visit(this);
     }
 }

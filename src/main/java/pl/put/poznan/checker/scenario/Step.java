@@ -6,8 +6,7 @@ package pl.put.poznan.checker.scenario;
  * @author I42-Alpha
  * @version 1.0
  */
-public class Step {
-
+public class Step implements VisitableElement{
     private String text;
     /**
      * Podscenariusz powiązany z krokiem
@@ -50,5 +49,10 @@ public class Step {
 
     public void setChild(SubScenario child) {
         this.child = child;
+    }
+
+    @Override
+    public Visitor acceptVisitor(Visitor visitor) {
+        return visitor.visit(this);
     }
 }
