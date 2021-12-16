@@ -10,14 +10,25 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-class ScenarioFileLoaderTest {
-    private static Scenario scenario, scenarioRandomWhites, scenarioNoWhites, ScenarioNoFirstDelim;
+public class ScenarioFileLoaderTest {
+    private static Scenario scenario, scenarioRandomWhites, ScenarioNoFirstDelim, scenarioNoWhites;
 
     @BeforeAll
-    static void createSampleScenario()
+    static void setSampleScenarios()
     {
+        List<Scenario> list = createSampleScenarios();
+        scenario = list.get(0);
+        scenarioRandomWhites = list.get(1);
+        ScenarioNoFirstDelim = list.get(2);
+        scenarioNoWhites = list.get(3);
+    }
+
+    public static List<Scenario> createSampleScenarios()
+    {
+        List<Scenario> ret = new ArrayList<>();
         ScenarioFileLoader.delim = "-";
         ScenarioFileLoader.bIgnoreExcessWhitechars = true;
         ScenarioFileLoader.bStartWithDelim = true;
@@ -45,7 +56,7 @@ class ScenarioFileLoaderTest {
                     "- System informuje o poprawnym dodaniu książki.\n");
 
             scenarioWriter.flush();
-            scenario = ScenarioFileLoader.loadScenario("testScenario.txt");
+            ret.add(ScenarioFileLoader.loadScenario("testScenario.txt"));
             scenarioWriter.close();
             writer.close();
 
@@ -69,7 +80,7 @@ class ScenarioFileLoaderTest {
                     "- Bibliotekarz zatwierdza dodanie książki.\n" +"\n" +"\n" +"\n" +"\n" +"\n" +
                     "- System informuje o poprawnym dodaniu książki.\n");
             scenarioWriter.flush();
-            scenarioRandomWhites = ScenarioFileLoader.loadScenario("testScenario.txt");
+            ret.add(ScenarioFileLoader.loadScenario("testScenario.txt"));
             scenarioWriter.close();
             writer.close();
 
@@ -94,7 +105,7 @@ class ScenarioFileLoaderTest {
                     " System informuje o poprawnym dodaniu książki.\n");
             scenarioWriter.flush();
             ScenarioFileLoader.bStartWithDelim = false;
-            ScenarioNoFirstDelim = ScenarioFileLoader.loadScenario("testScenario.txt");
+            ret.add(ScenarioFileLoader.loadScenario("testScenario.txt"));
             scenarioWriter.close();
             writer.close();
             ScenarioFileLoader.bStartWithDelim = true;
@@ -120,7 +131,7 @@ class ScenarioFileLoaderTest {
                     "- System informuje o poprawnym dodaniu książki.\n");
             scenarioWriter.flush();
             ScenarioFileLoader.bIgnoreExcessWhitechars = false;
-            scenarioNoWhites = ScenarioFileLoader.loadScenario("testScenario.txt");
+            ret.add(ScenarioFileLoader.loadScenario("testScenario.txt"));
             scenarioWriter.close();
             writer.close();
 
@@ -129,6 +140,7 @@ class ScenarioFileLoaderTest {
         catch (IOException e) {
             e.printStackTrace();
         }
+        return ret;
     }
     @Test
     void scenarioProper()

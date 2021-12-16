@@ -12,9 +12,14 @@ import java.util.List;
  * Odpowiada za logikę wczytywania, sprawdzania poprawności i przetwarzania scenariuszy
  *
  * @author I42-Alpha
- * @version 1.1
+ * @version 1.2
  */
 public class ScenarioQualityChecker
 {
-
+    public int getScenarioSize(Scenario scenario)
+    {
+        LengthVisitor visitor = new LengthVisitor();
+        scenario.acceptVisitor(visitor);
+        return visitor.getSize();
+    }
 }

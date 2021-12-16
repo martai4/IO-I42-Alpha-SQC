@@ -1,5 +1,6 @@
 package pl.put.poznan.checker.scenario;
 
+//todo: przerzucić do logiki
 public class ScenarioTextifier implements Visitor{
 
     private Integer depth;
