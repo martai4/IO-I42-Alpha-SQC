@@ -17,5 +17,11 @@ jobs:
         run: mkdir build && cp target/*.jar build
       - uses: actions/upload-artifact@v2
         with:
-          name: Package
+          name: ScenarioQualityCheckerREST.jar
           path: build
+      - name: Javadocs
+        run: mvn javadoc:javadoc && mkdir docs && cp apidocs/*.jar docs
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Docs
+          path: docs
