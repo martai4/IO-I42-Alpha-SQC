@@ -13,3 +13,9 @@ jobs:
           cache: maven
       - name: Validate, build and run tests
         run: mvn --batch-mode --update-snapshots verify
+      - name: Copy .jar 
+        run: mkdir build && cp build/*.jar build
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Package
+          path: build
