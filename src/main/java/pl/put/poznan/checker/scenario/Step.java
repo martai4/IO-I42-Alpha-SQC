@@ -4,6 +4,11 @@ public class Step implements VisitableElement{
     private String text;
     private SubScenario child;
 
+    public Step(String text, SubScenario child) {
+        this.text = text;
+        this.child = child;
+    }
+
     public String getText() {
         return text;
     }

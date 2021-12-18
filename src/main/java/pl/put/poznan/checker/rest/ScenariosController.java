@@ -1,5 +1,6 @@
 package pl.put.poznan.checker.rest;
 
+import org.springframework.http.HttpCookie;
 import pl.put.poznan.checker.scenario.ScenarioRepository;
 import pl.put.poznan.checker.scenario.Scenario;
 import org.springframework.http.HttpStatus;
@@ -7,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.put.poznan.checker.scenario.ScenarioTextifier;
+import pl.put.poznan.checker.scenario.SubLevelsVisitor;
 
 import java.util.HashMap;
 
@@ -62,6 +64,23 @@ public class ScenariosController {
             System.out.println("Scenario textified " + id + ":");
             System.out.println(textifier.getText());
             return ResponseEntity.ok(textifier.getText());
+        }
+    }
+    @GetMapping("/toLevel/{id} {lvl} {name}")
+    public ResponseEntity<Scenario>getScenarioToLevel(@PathVariable("id") int id, @PathVariable("lvl") int level, @PathVariable("name")String name){
+        Scenario toConvert = scenarioRepository.getScenario(id);
+        if(toConvert == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        else{
+            SubLevelsVisitor visitor = null;
+            try {
+                visitor = new SubLevelsVisitor(toConvert, level, name);
+            } catch (Exception e) {
+               return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
+            toConvert.acceptVisitor(visitor);
+            return ResponseEntity.ok(visitor.getConverted());
         }
     }
 }

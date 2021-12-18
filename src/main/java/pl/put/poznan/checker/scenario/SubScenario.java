@@ -1,5 +1,6 @@
 package pl.put.poznan.checker.scenario;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class SubScenario implements VisitableElement {
@@ -7,7 +8,9 @@ public class SubScenario implements VisitableElement {
     private Integer length;
     private List<Step> steps;
 
-    public SubScenario(){};
+    public SubScenario(){
+        steps = new LinkedList<Step>();
+    };
 
     public SubScenario(int lvl){
         this.level = lvl;
@@ -37,6 +40,7 @@ public class SubScenario implements VisitableElement {
         this.steps = stepsList;
     }
 
+    // zwraca wizytatora po wykonaniu jego zadania
     @Override
     public Visitor acceptVisitor(Visitor visitor) {
         return visitor.visit(this);
