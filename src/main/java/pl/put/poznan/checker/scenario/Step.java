@@ -1,8 +1,39 @@
 package pl.put.poznan.checker.scenario;
 
-public class Step {
+/**
+ * Pojedyńczy krok scenariusza
+ *
+ * @author I42-Alpha
+ * @version 1.0
+ */
+public class Step implements VisitableElement{
     private String text;
+    /**
+     * Podscenariusz powiązany z krokiem
+     */
     private SubScenario child;
+
+    /**
+     * Konstruktor klasy Step
+     */
+    Step() { }
+
+    /**
+     * Konstruktor klasy Step
+     * @param stepText zawartość kroku
+     */
+    Step(String stepText) {
+        this.text = stepText;
+    }
+
+    /**
+     * Konstruktor klasy Step
+     * @param stepText zawartość kroku
+     * @param stepChild podscenariusz powiązany z krokiem
+     */
+    Step(String stepText, SubScenario stepChild) {
+        this.text = stepText; this.child = stepChild;
+    }
 
     public String getText() {
         return text;
@@ -18,5 +49,10 @@ public class Step {
 
     public void setChild(SubScenario child) {
         this.child = child;
+    }
+
+    @Override
+    public Visitor acceptVisitor(Visitor visitor) {
+        return visitor.visit(this);
     }
 }
