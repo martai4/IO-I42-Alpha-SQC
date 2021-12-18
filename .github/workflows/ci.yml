@@ -13,3 +13,15 @@ jobs:
           cache: maven
       - name: Validate, build and run tests
         run: mvn --batch-mode --update-snapshots verify
+      - name: Copy .jar 
+        run: mkdir build && cp target/*.jar build
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ScenarioQualityCheckerREST.jar
+          path: build
+      - name: Javadocs
+        run: mvn javadoc:javadoc
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Docs
+          path: target/site/apidocs
