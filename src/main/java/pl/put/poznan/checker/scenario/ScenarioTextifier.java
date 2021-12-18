@@ -51,7 +51,6 @@ public class ScenarioTextifier implements Visitor{
         else logger.debug("Title is null");
 
         boolean firstActor=true;
-        this.text = this.text.concat("Aktorzy: ");
         for(String actor: scenario.getActors()){
             if(!firstActor) this.text = this.text.concat(", ");
             else this.text = this.text.concat("Aktorzy: ");
