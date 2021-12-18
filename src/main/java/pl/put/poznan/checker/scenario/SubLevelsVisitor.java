@@ -1,45 +1,87 @@
 package pl.put.poznan.checker.scenario;
-import java.util.LinkedList;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Klasa implementuje wzorzec projektowy "Wizytator" w celu spełnienia funkcjonalności reprezentowania scenariuszy
+ * tylko do określonego poziomu zagłebienia.
+ */
 public class SubLevelsVisitor implements Visitor {
 
-    private Scenario toConvert;
-    private int maxLevel;
+    /**
+     * Maksymalny poziom zagłębienia podscenariuszy
+     */
+    private final int maxLevel;
+    /**
+     * Aktualny poziom zagłebienia w czasie przetwarzania
+     */
     private int currentLevel;
-
+    /**
+     * Nazwa dla nowego scenariusza
+     */
     private final String newName;
-    private SubScenario mainScenario;
+    /**
+     * Rodzic dla aktualnie przetwarzanego elementu
+     */
     private SubScenario currentParent;
+    /**
+     * Wynikowy scenariusz, o poziomie zaglebienia okreslonym przez wywolanie
+     */
     private Scenario result;
+    /**
+     * Logger dokumentujacy prace klasy
+     */
+    private final Logger logger;
 
-    public SubLevelsVisitor(Scenario toConvert, int lvl, String name) throws Exception {
-        this.toConvert = toConvert;
+    /**
+     * Konstruktor okreslajacy podstawowe parametry.
+     *
+     * @param maxLevel Maksymalny poziom zaglebienia, jesli < 1 rzuca wyjatek
+     * @param name     Nazwa dla nowej wersji scenariusza
+     * @throws Exception Wyjatek rzucany w przypadku podania nieprawidlowego poziomu maksymalnego
+     */
+    public SubLevelsVisitor(int maxLevel, String name) throws Exception {
+        logger = LoggerFactory.getLogger(SubLevelsVisitor.class);
         this.newName = name;
         this.currentLevel = 0;
         this.result = null;
-        if(lvl < 1){
+        if (maxLevel < 1) {
+            logger.debug("Nieprawidlowy parametr maxLevel: {}, nie powinien byc mniejszy niz 1", maxLevel);
             throw new Exception();
+        } else {
+            this.maxLevel = maxLevel;
         }
-        else{
-            this.maxLevel = lvl;
-        }
+        logger.info("Utworzono obiekt klasy {}", this.getClass());
     }
 
+    /**
+     * Implementacja interfejsu wzorca projektowego wizytator
+     *
+     * @param toConvert Scenariusz, ktory ma zostac przetworzony
+     * @return
+     */
     @Override
     public Visitor visit(Scenario toConvert) {
-        this.mainScenario = new SubScenario();
+        logger.info("Rozpoczeto przetwarzanie scenariusza {}", toConvert.getName());
+        SubScenario mainScenario = new SubScenario();
         this.result = new Scenario(newName, toConvert.getActors(), toConvert.getSystemActor(), mainScenario);
-        // wizytator wchodzi w tresc scenariusza
-//        this.parents.push(mainScenario);
         currentParent = mainScenario;
         toConvert.getMain().acceptVisitor(this);
-
+        logger.info("Zakonczono przetwarzanie scenariusza {}", toConvert.getName());
         return this;
     }
 
+    /**
+     * Implementacja interfejsu wzorca projektowego wizytator
+     *
+     * @param subScenario Aktualnie przetwarzany podscenariusz
+     * @return
+     */
     @Override
     public Visitor visit(SubScenario subScenario) {
         SubScenario parentForThis = currentParent;
-        for( Step step : subScenario.getSteps()){
+        for (Step step : subScenario.getSteps()) {
 //            this.parents.add(subScenario);
             step.acceptVisitor(this);
             currentParent = parentForThis;
@@ -47,17 +89,19 @@ public class SubLevelsVisitor implements Visitor {
         return this;
     }
 
+    /**
+     * Implementacja interfejsu wzorca projektowego wizytator
+     *
+     * @param step Aktualnie przetwarzany punkt scenariusza
+     * @return
+     */
     @Override
     public Visitor visit(Step step) {
         this.currentLevel += 1;
-//        if(this.currentLevel < this.maxLevel-1 || (this.currentLevel == this.maxLevel && step.getChild() == null)){
-//            this.parents.getLast().getSteps().add(step);
-//        }
-        if(this.currentLevel < this.maxLevel){
-            if(step.getChild()==null){
+        if (this.currentLevel < this.maxLevel) {
+            if (step.getChild() == null) {
                 currentParent.getSteps().add(step);
-            }
-            else{
+            } else {
                 SubScenario newStepSubscenario = new SubScenario();
                 SubScenario parentForThis = currentParent;
                 currentParent = newStepSubscenario;
@@ -65,16 +109,20 @@ public class SubLevelsVisitor implements Visitor {
                 currentParent = parentForThis;
                 currentParent.getSteps().add(new Step(step.getText(), newStepSubscenario));
             }
-        }
-        else
-        {
+        } else {
             currentParent.getSteps().add(new Step(step.getText(), null));
-//            parents.getLast().getSteps().add(new Step(step.getText(), null));
         }
-        this.currentLevel -=1;
+        this.currentLevel -= 1;
         return this;
     }
-    public Scenario getConverted(){
+
+    /**
+     * Funkcja zwraca wynikowy scenariusz
+     *
+     * @return Przetworzony scenariusz
+     */
+    public Scenario getConverted() {
+        logger.info("Zwrocenie scenariusza \"{}\"", this.newName);
         return this.result;
     }
 }

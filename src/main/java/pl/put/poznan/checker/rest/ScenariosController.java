@@ -1,12 +1,10 @@
 package pl.put.poznan.checker.rest;
 
-import org.springframework.http.HttpCookie;
-import pl.put.poznan.checker.scenario.ScenarioRepository;
-import pl.put.poznan.checker.scenario.Scenario;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.put.poznan.checker.scenario.Scenario;
+import pl.put.poznan.checker.scenario.ScenarioRepository;
 import pl.put.poznan.checker.scenario.ScenarioTextifier;
 import pl.put.poznan.checker.scenario.SubLevelsVisitor;
 
@@ -75,11 +73,12 @@ public class ScenariosController {
         else{
             SubLevelsVisitor visitor = null;
             try {
-                visitor = new SubLevelsVisitor(toConvert, level, name);
+                visitor = new SubLevelsVisitor(level, name);
             } catch (Exception e) {
                return new ResponseEntity(HttpStatus.BAD_REQUEST);
             }
             toConvert.acceptVisitor(visitor);
+            scenarioRepository.saveScenario(visitor.getConverted());
             return ResponseEntity.ok(visitor.getConverted());
         }
     }
