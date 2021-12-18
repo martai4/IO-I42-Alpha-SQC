@@ -7,6 +7,12 @@ public class SubScenario implements VisitableElement {
     private Integer length;
     private List<Step> steps;
 
+    public SubScenario(){};
+
+    public SubScenario(int lvl){
+        this.level = lvl;
+    }
+
     public Integer getLevel() {
         return level;
     }

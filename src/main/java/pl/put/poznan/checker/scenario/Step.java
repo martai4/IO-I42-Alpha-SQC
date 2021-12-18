@@ -19,7 +19,6 @@ public class Step implements VisitableElement{
     public void setChild(SubScenario child) {
         this.child = child;
     }
-
     @Override
     public Visitor acceptVisitor(Visitor visitor) {
         return visitor.visit(this);

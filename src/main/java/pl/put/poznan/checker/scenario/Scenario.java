@@ -10,6 +10,13 @@ public class Scenario implements VisitableElement {
 
     public Scenario(){}
 
+    public Scenario(String name, List<String> actors, String systemActor, SubScenario main) {
+        this.name = name;
+        this.actors = actors;
+        this.systemActor = systemActor;
+        this.main = main;
+    }
+
     public String getName() {
         return name;
     }
