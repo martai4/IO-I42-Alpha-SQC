@@ -1,16 +1,18 @@
 package pl.put.poznan.checker.rest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.put.poznan.checker.scenario.Scenario;
-import pl.put.poznan.checker.scenario.ScenarioRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import pl.put.poznan.checker.logic.visitor.LengthVisitor;
 import pl.put.poznan.checker.logic.visitor.ScenarioTextifier;
 import pl.put.poznan.checker.logic.visitor.SubLevelsVisitor;
+import pl.put.poznan.checker.scenario.Scenario;
+import pl.put.poznan.checker.scenario.ScenarioRepository;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/scenarios")
@@ -87,11 +89,43 @@ public class ScenariosController {
             try {
                 visitor = new SubLevelsVisitor(level, name);
             } catch (Exception e) {
-               return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
             }
             toConvert.acceptVisitor(visitor);
             scenarioRepository.addScenario(visitor.getConverted());
             return ResponseEntity.ok(visitor.getConverted());
+        }
+    }
+
+    @GetMapping("/keywordsNumber/{id}")
+    public ResponseEntity<Integer> getScenarioKeywordsNumber(@PathVariable("id") int id) {
+        Scenario scenario = scenarioRepository.getScenario(id);
+        if (scenario != null) {
+            return ResponseEntity.ok(scenario.HowManyDecisions());
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/noActorsStep/{id}")
+    public ResponseEntity<List<String>> getScenarioStepsWithoutActors(@PathVariable("id") int id) {
+        Scenario scenario = scenarioRepository.getScenario(id);
+        if (scenario != null) {
+            return ResponseEntity.ok(scenario.ShowActorsErrors());
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/length/{id}")
+    public ResponseEntity<Integer> getScenarioLength(@PathVariable("id") int id) {
+        Scenario scenario = scenarioRepository.getScenario(id);
+        if (scenario != null) {
+            LengthVisitor visitor = new LengthVisitor();
+            scenario.acceptVisitor(visitor);
+            return ResponseEntity.ok(visitor.getSize());
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
 }
