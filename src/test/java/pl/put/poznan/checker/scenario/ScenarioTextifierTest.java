@@ -2,7 +2,7 @@ package pl.put.poznan.checker.scenario;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.put.poznan.checker.logic.ScenarioTextifier;
+import pl.put.poznan.checker.logic.visitor.ScenarioTextifier;
 
 import java.util.ArrayList;
 import java.util.List;
