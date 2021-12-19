@@ -20,11 +20,21 @@ public class Scenario implements VisitableElement {
     /** Zawartosc scenariusza znajduje sie w obiekcie klasy SubScenario, nawet jezeli ten nie posiada podscenariuszy. */
     private SubScenario main;
 
-    /**
+  /**
      * Domyslny konstruktor Scenario.
      */
-    public Scenario(){
+    public Scenario(){}
 
+    public void HowManyDecisions(){
+        System.out.println(main.HowManyDecisions());
+    }
+
+    public void ShowActorsErrors(){
+        List<String> odpowiedz=new ArrayList<>();
+        odpowiedz=main.ListNoActorsErrors(actors);
+        for (String s : odpowiedz) {
+            System.out.println(s);
+        }
     }
 
     public String getName() {
