@@ -19,6 +19,7 @@ public class ScenarioQualityChecker
     /**
      * Zwraca rozmiar {@link pl.put.poznan.checker.scenario.Scenario scenariusza} przy pomocy obiektu
      * {@link LengthVisitor LengthVisitor}.
+     * @return Liczba kroków w scenariuszu.
      */
     public int getScenarioSize(Scenario scenario)
     {

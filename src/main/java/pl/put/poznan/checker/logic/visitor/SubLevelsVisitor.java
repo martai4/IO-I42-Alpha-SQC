@@ -8,17 +8,17 @@ import pl.put.poznan.checker.scenario.SubScenario;
 import pl.put.poznan.checker.logic.visitor.base.Visitor;
 
 /**
- * Klasa implementuje wzorzec projektowy "Wizytator" w celu spełnienia funkcjonalności reprezentowania scenariuszy
- * tylko do określonego poziomu zagłebienia.
+ * Klasa implementuje wzorzec projektowy "Wizytator" w celu spelnienia funkcjonalnosci reprezentowania scenariuszy
+ * tylko do okreslonego poziomu zaglebienia.
  */
 public class SubLevelsVisitor implements Visitor {
 
     /**
-     * Maksymalny poziom zagłębienia podscenariuszy
+     * Maksymalny poziom zaglebienia podscenariuszy
      */
     private final int maxLevel;
     /**
-     * Aktualny poziom zagłebienia w czasie przetwarzania
+     * Aktualny poziom zaglebienia w czasie przetwarzania
      */
     private int currentLevel;
     /**
@@ -41,7 +41,7 @@ public class SubLevelsVisitor implements Visitor {
     /**
      * Konstruktor okreslajacy podstawowe parametry.
      *
-     * @param maxLevel Maksymalny poziom zaglebienia, jesli < 1 rzuca wyjatek
+     * @param maxLevel Maksymalny poziom zaglebienia, jesli &lt; 1 rzuca wyjatek
      * @param name     Nazwa dla nowej wersji scenariusza
      * @throws Exception Wyjatek rzucany w przypadku podania nieprawidlowego poziomu maksymalnego
      */
