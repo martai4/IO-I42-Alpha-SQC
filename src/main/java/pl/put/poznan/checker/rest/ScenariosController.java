@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.put.poznan.checker.scenario.Scenario;
 import pl.put.poznan.checker.scenario.ScenarioRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.put.poznan.checker.scenario.ScenarioTextifier;
 import pl.put.poznan.checker.scenario.SubLevelsVisitor;
 
@@ -13,42 +15,54 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/scenarios")
 public class ScenariosController {
-    private ScenarioRepository scenarioRepository = new ScenarioRepository();
+    private static final Logger logger = LoggerFactory.getLogger(ScenariosController.class);
+    ScenarioRepository scenarioRepository = new ScenarioRepository();
 
     @PostMapping("/")
-    public Integer addScenario(@RequestBody Scenario scenario) {
-        return scenarioRepository.saveScenario(scenario);
+    public void addScenario(@RequestBody Scenario scenario) {
+        logger.info("addScenario(Scenario scenario) próbuje dodać scenariusz: " + scenario.getName() );
+        scenarioRepository.addScenario(scenario);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Scenario> getAllScenarios(@PathVariable("id") Integer id) {
+    public ResponseEntity<Scenario> getScenario(@PathVariable("id") Integer id) {
         var scenario = scenarioRepository.getScenario(id);
 
-        if (scenario == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        } else {
+        if (scenario == null)
+        {
+            logger.warn("getScenario(Integer id) próbował zwrócić nieistniejący scenariusz o numerze " + id.toString());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        else
+        {
+            logger.info("getScenario(Integer id) zwraca scenariusz o numerze " + id.toString() + " i nazwie \""
+                    + scenario.getName() + "\"" );
             return ResponseEntity.ok(scenario);
         }
     }
 
     @GetMapping("/listAll")
     public ResponseEntity<HashMap<Integer, String>> listAllScenarios() {
-        HashMap<Integer, String> scenarios = new HashMap<>();
+        /*HashMap<Integer, String> scenarios = new HashMap<>();
         for (var key : scenarioRepository.getScenarios().keySet()) {
             scenarios.put(key, scenarioRepository.getScenario(key).getName());
+        }*/
+        HashMap<Integer, String> scenarios = new HashMap<>(); //todo: nie lepiej lista?
+        int i = 0;
+        for (var scenario : scenarioRepository.getScenarios()) {
+            scenarios.put(i++, scenario.getName());
         }
+
         return ResponseEntity.ok(scenarios);
     }
 
     @GetMapping("/byName/{name}")
     public ResponseEntity<Scenario> getScenarioByName(@PathVariable("name") String name) {
-        for (var key : scenarioRepository.getScenarios().keySet()) {
-            Scenario act = scenarioRepository.getScenarios().get(key);
-            if (act.getName().equals(name)) {
-                return ResponseEntity.ok(act);
-            }
+        Scenario act = scenarioRepository.getScenarioByName(name);
+        if (act == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(act);
     }
 
     @GetMapping("/text/{id}")
@@ -78,7 +92,7 @@ public class ScenariosController {
                return new ResponseEntity(HttpStatus.BAD_REQUEST);
             }
             toConvert.acceptVisitor(visitor);
-            scenarioRepository.saveScenario(visitor.getConverted());
+            scenarioRepository.addScenario(visitor.getConverted());
             return ResponseEntity.ok(visitor.getConverted());
         }
     }

@@ -1,12 +1,38 @@
 package pl.put.poznan.checker.scenario;
 
+/**
+ * Pojedynczy krok scenariusza
+ *
+ * @author I42-Alpha
+ * @version 1.1
+ */
 public class Step implements VisitableElement{
     private String text;
+    /**
+     * {@link pl.put.poznan.checker.scenario.SubScenario Podscenariusz} powiazany z krokiem.
+     */
     private SubScenario child;
 
-    public Step(String text, SubScenario child) {
-        this.text = text;
-        this.child = child;
+    /**
+     * Domyslny konstruktor Step.
+     */
+    public Step() { }
+
+    /**
+     * Konstruktor Step, ustawia zawartosc tekstowa.
+     * @param stepText zawartosc kroku
+     */
+    public Step(String stepText) {
+        this.text = stepText;
+    }
+
+    /**
+     * Konstruktor Step, ustawia zawartosc tekstowa i podscenariusz.
+     * @param stepText zawartosc kroku
+     * @param stepChild podscenariusz powiazany z krokiem
+     */
+    public Step(String stepText, SubScenario stepChild) {
+        this.text = stepText; this.child = stepChild;
     }
 
     public String getText() {

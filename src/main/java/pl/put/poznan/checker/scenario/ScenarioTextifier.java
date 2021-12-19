@@ -1,5 +1,6 @@
 package pl.put.poznan.checker.scenario;
 
+//todo: przerzucić do logiki
 public class ScenarioTextifier implements Visitor{
 
     private Integer depth;
@@ -12,8 +13,8 @@ public class ScenarioTextifier implements Visitor{
 
     public ScenarioTextifier(){
         this.depth = 0;
-        this.text = new String();
-        this.stepPrefix ="";
+        this.text = "";
+        this.stepPrefix = "";
     }
 
     @Override

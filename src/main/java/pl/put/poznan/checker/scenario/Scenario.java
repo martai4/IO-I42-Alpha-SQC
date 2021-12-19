@@ -1,14 +1,31 @@
 package pl.put.poznan.checker.scenario;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Wlasciwy obiekt przetwarzania - scenariusz wymagan funkcjonalnych.
+ *
+ * @author I42-Alpha
+ * @version 1.1
+ */
 public class Scenario implements VisitableElement {
-    private String name;
-    private List<String> actors;
+    private static final Logger logger = LoggerFactory.getLogger(Scenario.class);
+    private String name; /** Tytul scenariusza. */
+    private List<String> actors = new ArrayList<>();
     private String systemActor;
+    /** Zawartosc scenariusza znajduje sie w obiekcie klasy SubScenario, nawet jezeli ten nie posiada podscenariuszy. */
     private SubScenario main;
 
-    public Scenario(){}
+    /**
+     * Domyslny konstruktor Scenario.
+     */
+    public Scenario(){
+
+    }
 
     public Scenario(String name, List<String> actors, String systemActor, SubScenario main) {
         this.name = name;
@@ -33,6 +50,59 @@ public class Scenario implements VisitableElement {
         this.actors = actors;
     }
 
+    /**
+     * Zwraca aktora z listy aktorow scenariusza.
+     * @param index numer aktora, ktorego chcemy zwrocic. Aktorzy sa numerowani w kolejnosci wprowadzenia.
+     * @return Nazwa aktora.
+     */
+    public String getActor(Integer index) {
+        if (index >= getActorsCount())
+        {
+            logger.warn("getActor(Integer) probowal zwrocic nieistniejacy element o indeksie "
+                    + index.toString());
+            return null;
+        }
+        return actors.get(index);
+    }
+
+    /**
+     * Nadpisuje wybranego aktora w liscie aktorow.
+     * @param index indeks aktora, ktory zostanie ndapisany.
+     * @param actor nowa nazwa aktora.
+     */
+    public void setActor(Integer index, String actor) {
+        if (index >= getActorsCount())
+        {
+            logger.warn("setActor(Integer, String) probowal nadpisac nieistniejacy element o indeksie "
+                    + index.toString());
+            return;
+        }
+        actors.set(index, actor);
+    }
+
+    /**
+     * Dodaje aktora na koniec listy aktorow.
+     * @param actor Nazwa aktora.
+     */
+    public void addActor(String actor) { actors.add(actor);
+    }
+
+    /**
+     * Zwraca rozmiar listy aktorow.
+     * @return Rozmiar listy aktorow.
+     */
+    public Integer getActorsCount() {
+        return actors.size();
+    }
+
+    public String getSystemActor() {
+        return systemActor;
+    }
+
+    public void setSystemActor(String systemActor) {
+        this.systemActor = systemActor;
+    }
+
     public SubScenario getMain() {
         return main;
     }
@@ -40,10 +110,6 @@ public class Scenario implements VisitableElement {
     public void setMain(SubScenario main) {
         this.main = main;
     }
-
-    public String getSystemActor() { return systemActor; }
-
-    public void setSystemActor(String systemActor) { this.systemActor = systemActor; }
 
     @Override
     public Visitor acceptVisitor(Visitor visitor) {
