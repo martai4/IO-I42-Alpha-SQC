@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Serce programu w wersji zdalnego API
+ * Serce programu w wersji zdalnego API.
  *
  * @author I42-Alpha
  * @version 1.0
@@ -14,12 +14,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(scanBasePackages = {"pl.put.poznan.checker.rest"})
 public class ScenarioQualityCheckerApplication {
     private static final Logger logger = LoggerFactory.getLogger(ScenarioQualityCheckerApplication.class);
+
     /**
-     * Główna metoda uruchamiana przy starcie programu
-     * @param args argumenty wiersza poleceń
+     * Domyslny konstruktor ScenarioQualityCheckerApplication.
+     * */
+    public ScenarioQualityCheckerApplication() {}
+    /**
+     * Glowna metoda uruchamiana przy starcie programu.
+     * @param args argumenty wiersza polecen
      * */
     public static void main(String[] args) {
-        logger.info("wystartowano");
+        logger.info("main(String[]) wystartowal");
         SpringApplication.run(ScenarioQualityCheckerApplication.class, args);
     }
 }

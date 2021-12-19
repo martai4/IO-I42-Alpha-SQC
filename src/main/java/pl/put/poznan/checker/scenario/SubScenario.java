@@ -7,15 +7,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Kawałek scenariusza, który zostaje wywoływany jako część wybranego kroku
+ * Kawalek {@link pl.put.poznan.checker.scenario.Scenario scenariusza}, ktory zostaje wywolywany jako czesc przetwarzania
+ * pojedynczego {@link pl.put.poznan.checker.scenario.Step kroku}. Wyjatkiem jest podscenariusz glowny scenariusza, od
+ * ktorego zaczyna sie przetwarzanie.
  *
  * @author I42-Alpha
- * @version 1.0
+ * @version 1.1
  */
 public class SubScenario implements VisitableElement
 {
     private static final Logger logger = LoggerFactory.getLogger(SubScenario.class);
     private List<Step> steps = new ArrayList<>();
+
+    /**
+     * Domyslny konstruktor SubScenario.
+     */
+    public SubScenario(){
+
+    }
 
     public List<Step> getSteps() {
         return steps;
@@ -26,49 +35,49 @@ public class SubScenario implements VisitableElement
     }
 
     /**
-     * Zwraca wybrany krok podscenariusza
+     * Zwraca wybrany {@link pl.put.poznan.checker.scenario.Step krok} podscenariusza.
      * @param index indeks kroku
-     * @return krok
+     * @return Krok z listy wszystkich krokow podscenariusza.
      */
     public Step getStep(Integer index) {
         if (index >= getLength())
         {
-            logger.warn("getStep(Integer index) próbował zwrócić nieistniejący element o indeksie " + index.toString());
+            logger.warn("getStep(Integer) probowal zwrocic nieistniejacy element o indeksie " + index.toString());
             return null;
         }
         return steps.get(index);
     }
     /**
-     * Nadpisuje wybrany krok scenariusza
-     * @param index indeks kroku, który zostanie nadpisany
+     * Nadpisuje wybrany {@link pl.put.poznan.checker.scenario.Step krok} podscenariusza.
+     * @param index indeks kroku, ktory zostanie nadpisany
      * @param step nowy krok
      */
     public void setStep(Integer index, Step step) {
         if (index >= getLength())
         {
-            logger.warn("setStep(Integer index, Step step) próbował nadpisać nieistniejący element o indeksie "
+            logger.warn("setStep(Integer, Step) probowal nadpisac nieistniejacy element o indeksie "
                     + index.toString());
             return;
         }
         this.steps.set(index, step);
     }
     /**
-     * Dodaje krok na koniec listy kroków
+     * Dodaje {@link pl.put.poznan.checker.scenario.Step krok} na koniec listy krokow.
      * @param step nowy krok
      */
     public void addStep(Step step) {
         this.steps.add(step);
     }
     /**
-     * Dodaje krok na koniec listy kroków, tworząc go z podanego tekstu
+     * Dodaje {@link pl.put.poznan.checker.scenario.Step krok} na koniec listy krokow, tworzac go z podanego tekstu.
      * @param stepText tekst nowego kroku
      */
     public void addStep(String stepText) {
         this.steps.add(new Step(stepText));
     }
     /**
-     * Zwraca rozmiar listy kroków
-     * @return rozmiar
+     * Zwraca rozmiar listy {@link pl.put.poznan.checker.scenario.Step krokow}.
+     * @return Rozmiar listy.
      */
     public Integer getLength() {
         return steps.size();
