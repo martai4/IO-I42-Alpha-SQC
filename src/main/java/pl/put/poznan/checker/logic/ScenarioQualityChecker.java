@@ -1,12 +1,6 @@
 package pl.put.poznan.checker.logic;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import pl.put.poznan.checker.logic.visitor.LengthVisitor;
 import pl.put.poznan.checker.scenario.Scenario;
-import pl.put.poznan.checker.scenario.SubScenario;
-
-import java.io.*;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Odpowiada za logike wczytywania, sprawdzania poprawnosci i przetwarzania {@link pl.put.poznan.checker.scenario.Scenario scenariuszy}.
@@ -24,7 +18,7 @@ public class ScenarioQualityChecker
     }
     /**
      * Zwraca rozmiar {@link pl.put.poznan.checker.scenario.Scenario scenariusza} przy pomocy obiektu
-     * {@link pl.put.poznan.checker.logic.LengthVisitor LengthVisitor}.
+     * {@link LengthVisitor LengthVisitor}.
      */
     public int getScenarioSize(Scenario scenario)
     {

@@ -1,11 +1,11 @@
-package pl.put.poznan.checker.logic;
+package pl.put.poznan.checker.logic.visitor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.put.poznan.checker.scenario.Scenario;
 import pl.put.poznan.checker.scenario.Step;
 import pl.put.poznan.checker.scenario.SubScenario;
-import pl.put.poznan.checker.scenario.Visitor;
+import pl.put.poznan.checker.logic.visitor.base.Visitor;
 
 /**
  * Wizytator odpowiedzialny za przetworzenie {@link pl.put.poznan.checker.scenario.Scenario scenariusza} na {@link ScenarioTextifier#text tekst} .
@@ -43,7 +43,7 @@ public class ScenarioTextifier implements Visitor {
 
     /**
      * Odwiedza wskazany {@link pl.put.poznan.checker.scenario.Scenario scenariusz}, dolacza do {@link ScenarioTextifier#text tekstu} informacje o {@link pl.put.poznan.checker.scenario.Scenario scenariuszu }
-     * i odwiedza  {@link pl.put.poznan.checker.scenario.SubScenario podscenariusz} {@link pl.put.poznan.checker.scenario.Scenario#main glowny}.
+     * i odwiedza  {@link pl.put.poznan.checker.scenario.SubScenario podscenariusz glowny}.
      *
      * @param scenario {@link pl.put.poznan.checker.scenario.Scenario scenariusz} ktory chcemy zamienic na {@link ScenarioTextifier#text tekst}.
      * @return zwraca {@link ScenarioTextifier siebie}.

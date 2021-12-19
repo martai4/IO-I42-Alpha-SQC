@@ -2,6 +2,8 @@ package pl.put.poznan.checker.scenario;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.put.poznan.checker.logic.visitor.base.VisitableElement;
+import pl.put.poznan.checker.logic.visitor.base.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +95,6 @@ public class SubScenario implements VisitableElement
     public void setSteps(List<Step> stepsList) {
         this.steps = stepsList;
     }
-
     /**
      * Zwraca wybrany {@link pl.put.poznan.checker.scenario.Step krok} podscenariusza.
      * @param index indeks kroku

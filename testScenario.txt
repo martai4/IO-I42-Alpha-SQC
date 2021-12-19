@@ -1,0 +1,17 @@
+TytuĹ‚: Dodane ksiÄ…ĹĽki
+Aktorzy: Bibliotekarz Inny KtoĹ›Tam TamKtoĹ›
+Aktor systemowy: System
+
+ Bibiliotekarz wybiera opcje dodania nowej pozycji ksiÄ…ĹĽkowej
+ WyĹ›wietla siÄ™ formularz.
+ Bibliotekarz podaje dane ksiÄ…ĹĽki.
+ IF: Bibliotekarz pragnie dodaÄ‡ egzemplarze ksiÄ…ĹĽki
+- Bibliotekarz wybiera opcjÄ™ definiowania egzemplarzy
+- System prezentuje zdefiniowane egzemplarze
+- FOR EACH egzemplarz:
+-- Bibliotekarz wybiera opcjÄ™ dodania egzemplarza
+-- System prosi o podanie danych egzemplarza
+-- Bibliotekarz podaje dane egzemplarza i zatwierdza.
+-- System informuje o poprawnym dodaniu egzemplarza i prezentuje zaktualizowanÄ… listÄ™ egzemplarzy.
+ Bibliotekarz zatwierdza dodanie ksiÄ…ĹĽki.
+ System informuje o poprawnym dodaniu ksiÄ…ĹĽki.

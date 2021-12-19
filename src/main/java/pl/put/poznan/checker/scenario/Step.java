@@ -1,12 +1,15 @@
 package pl.put.poznan.checker.scenario;
 
+import pl.put.poznan.checker.logic.visitor.base.VisitableElement;
+import pl.put.poznan.checker.logic.visitor.base.Visitor;
+
 /**
  * Pojedynczy krok scenariusza
  *
  * @author I42-Alpha
  * @version 1.1
  */
-public class Step implements VisitableElement{
+public class Step implements VisitableElement {
     private String text;
     /**
      * {@link pl.put.poznan.checker.scenario.SubScenario Podscenariusz} powiazany z krokiem.
@@ -50,7 +53,6 @@ public class Step implements VisitableElement{
     public void setChild(SubScenario child) {
         this.child = child;
     }
-
     @Override
     public Visitor acceptVisitor(Visitor visitor) {
         return visitor.visit(this);

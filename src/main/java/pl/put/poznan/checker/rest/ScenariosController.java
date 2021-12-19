@@ -7,7 +7,8 @@ import pl.put.poznan.checker.scenario.Scenario;
 import pl.put.poznan.checker.scenario.ScenarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.put.poznan.checker.logic.ScenarioTextifier;
+import pl.put.poznan.checker.logic.visitor.ScenarioTextifier;
+import pl.put.poznan.checker.logic.visitor.SubLevelsVisitor;
 
 import java.util.HashMap;
 
@@ -73,6 +74,24 @@ public class ScenariosController {
         } else {
             scenario.acceptVisitor(textifier);
             return ResponseEntity.ok(textifier.getText());
+        }
+    }
+    @GetMapping("/toLevel/{id} {lvl} {name}")
+    public ResponseEntity<Scenario>getScenarioToLevel(@PathVariable("id") int id, @PathVariable("lvl") int level, @PathVariable("name")String name){
+        Scenario toConvert = scenarioRepository.getScenario(id);
+        if(toConvert == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        else{
+            SubLevelsVisitor visitor = null;
+            try {
+                visitor = new SubLevelsVisitor(level, name);
+            } catch (Exception e) {
+               return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
+            toConvert.acceptVisitor(visitor);
+            scenarioRepository.addScenario(visitor.getConverted());
+            return ResponseEntity.ok(visitor.getConverted());
         }
     }
 }

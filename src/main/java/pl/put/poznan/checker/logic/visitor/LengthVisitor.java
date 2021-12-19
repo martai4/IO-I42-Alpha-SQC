@@ -1,12 +1,12 @@
-package pl.put.poznan.checker.logic;
+package pl.put.poznan.checker.logic.visitor;
 
 import pl.put.poznan.checker.scenario.Scenario;
 import pl.put.poznan.checker.scenario.Step;
 import pl.put.poznan.checker.scenario.SubScenario;
-import pl.put.poznan.checker.scenario.Visitor;
+import pl.put.poznan.checker.logic.visitor.base.Visitor;
 
 /**
- * {@link pl.put.poznan.checker.scenario.Visitor Wizytator} odpowiedzialny za zwracanie rozmiaru
+ * {@link Visitor Wizytator} odpowiedzialny za zwracanie rozmiaru
  * {@link pl.put.poznan.checker.scenario.Scenario scenariusza}.
  *
  * @author I42-Alpha
