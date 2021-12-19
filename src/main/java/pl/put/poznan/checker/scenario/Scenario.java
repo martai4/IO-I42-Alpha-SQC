@@ -19,24 +19,29 @@ public class Scenario implements VisitableElement {
     private String name; /** Tytul scenariusza. */
     private List<String> actors = new ArrayList<>();
     private String systemActor;
-    /** Zawartosc scenariusza znajduje sie w obiekcie klasy SubScenario, nawet jezeli ten nie posiada podscenariuszy. */
+    /**
+     * Zawartosc scenariusza znajduje sie w obiekcie klasy SubScenario, nawet jezeli ten nie posiada podscenariuszy.
+     */
     private SubScenario main;
 
-  /**
+    /**
      * Domyslny konstruktor Scenario.
      */
-    public Scenario(){}
-
-    public void HowManyDecisions(){
-        System.out.println(main.HowManyDecisions());
+    public Scenario() {
     }
 
-    public void ShowActorsErrors(){
-        List<String> odpowiedz=new ArrayList<>();
-        odpowiedz=main.ListNoActorsErrors(actors);
-        for (String s : odpowiedz) {
-            System.out.println(s);
-        }
+    public int HowManyDecisions() {
+        return main.HowManyDecisions();
+    }
+
+    //todo:poprawic funckje, zwraca napisy w postaci "pl.put.poznan.checker.scenario.Step@2f56ffe7"
+    public List<String> ShowActorsErrors() {
+        List<String> odpowiedz = new ArrayList<>();
+        odpowiedz = main.ListNoActorsErrors(actors);
+//        for (String s : odpowiedz) {
+//            System.out.println(s);
+//        }
+        return odpowiedz;
     }
 
     public Scenario(String name, List<String> actors, String systemActor, SubScenario main) {
