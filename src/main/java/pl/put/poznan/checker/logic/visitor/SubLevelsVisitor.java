@@ -1,7 +1,11 @@
-package pl.put.poznan.checker.scenario;
+package pl.put.poznan.checker.logic.visitor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.put.poznan.checker.scenario.Scenario;
+import pl.put.poznan.checker.scenario.Step;
+import pl.put.poznan.checker.scenario.SubScenario;
+import pl.put.poznan.checker.logic.visitor.base.Visitor;
 
 /**
  * Klasa implementuje wzorzec projektowy "Wizytator" w celu spełnienia funkcjonalności reprezentowania scenariuszy

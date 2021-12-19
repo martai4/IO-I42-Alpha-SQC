@@ -1,7 +1,12 @@
-package pl.put.poznan.checker.scenario;
+package pl.put.poznan.checker.logic.visitor;
+
+import pl.put.poznan.checker.scenario.Scenario;
+import pl.put.poznan.checker.scenario.Step;
+import pl.put.poznan.checker.scenario.SubScenario;
+import pl.put.poznan.checker.logic.visitor.base.Visitor;
 
 //todo: przerzucić do logiki
-public class ScenarioTextifier implements Visitor{
+public class ScenarioTextifier implements Visitor {
 
     private Integer depth;
     private String text;

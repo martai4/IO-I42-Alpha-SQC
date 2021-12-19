@@ -7,8 +7,8 @@ import pl.put.poznan.checker.scenario.Scenario;
 import pl.put.poznan.checker.scenario.ScenarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.put.poznan.checker.scenario.ScenarioTextifier;
-import pl.put.poznan.checker.scenario.SubLevelsVisitor;
+import pl.put.poznan.checker.logic.visitor.ScenarioTextifier;
+import pl.put.poznan.checker.logic.visitor.SubLevelsVisitor;
 
 import java.util.HashMap;
 
