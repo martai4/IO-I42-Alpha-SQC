@@ -2,6 +2,7 @@ package pl.put.poznan.checker.scenario;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.put.poznan.checker.logic.ScenarioTextifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class ScenarioTextifierTest {
 
     ScenarioTextifier visitor;
+
+
     @BeforeEach
     void createVisitor(){
         visitor = new ScenarioTextifier();
