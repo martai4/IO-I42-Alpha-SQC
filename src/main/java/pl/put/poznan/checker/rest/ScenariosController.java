@@ -73,8 +73,6 @@ public class ScenariosController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         } else {
             scenario.acceptVisitor(textifier);
-            System.out.println("Scenario textified " + id + ":");
-            System.out.println(textifier.getText());
             return ResponseEntity.ok(textifier.getText());
         }
     }
