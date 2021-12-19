@@ -1,9 +1,11 @@
 package pl.put.poznan.checker.logic;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import pl.put.poznan.checker.debug.ScenarioFileLoaderTest;
 import pl.put.poznan.checker.scenario.Scenario;
+
 import java.util.List;
 
 class ScenarioQualityCheckerTest {
