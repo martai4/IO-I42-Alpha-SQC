@@ -10,19 +10,30 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-class ScenarioFileLoaderTest {
-    private static Scenario scenario, scenarioRandomWhites, scenarioNoWhites, ScenarioNoFirstDelim;
+public class ScenarioFileLoaderTest {
+    private static Scenario scenario, scenarioNoWhites, scenarioRandomWhites, ScenarioNoFirstDelim;
 
     @BeforeAll
-    static void createSampleScenario()
+    static void setSampleScenarios()
     {
+        List<Scenario> list = createSampleScenarios();
+        scenario = list.get(0);
+        scenarioNoWhites = list.get(1);
+        scenarioRandomWhites = list.get(2);
+        ScenarioNoFirstDelim = list.get(3);
+    }
+
+    public static List<Scenario> createSampleScenarios()
+    {
+        List<Scenario> ret = new ArrayList<>();
         ScenarioFileLoader.delim = "-";
         ScenarioFileLoader.bIgnoreExcessWhitechars = true;
         ScenarioFileLoader.bStartWithDelim = true;
-        File file = new File("testScenario.txt");
         try {
+            File file = new File("testScenario.txt");
             FileWriter scenarioWriter = new FileWriter(file);
             BufferedWriter writer = new BufferedWriter(scenarioWriter);
 
@@ -45,7 +56,10 @@ class ScenarioFileLoaderTest {
                     "- System informuje o poprawnym dodaniu książki.\n");
 
             scenarioWriter.flush();
-            scenario = ScenarioFileLoader.loadScenario("testScenario.txt");
+            ret.add(ScenarioFileLoader.loadScenario("testScenario.txt"));
+            ScenarioFileLoader.bIgnoreExcessWhitechars = false;
+            ret.add(ScenarioFileLoader.loadScenario("testScenario.txt"));
+            ScenarioFileLoader.bIgnoreExcessWhitechars = true;
             scenarioWriter.close();
             writer.close();
 
@@ -69,7 +83,7 @@ class ScenarioFileLoaderTest {
                     "- Bibliotekarz zatwierdza dodanie książki.\n" +"\n" +"\n" +"\n" +"\n" +"\n" +
                     "- System informuje o poprawnym dodaniu książki.\n");
             scenarioWriter.flush();
-            scenarioRandomWhites = ScenarioFileLoader.loadScenario("testScenario.txt");
+            ret.add(ScenarioFileLoader.loadScenario("testScenario.txt"));
             scenarioWriter.close();
             writer.close();
 
@@ -94,41 +108,16 @@ class ScenarioFileLoaderTest {
                     " System informuje o poprawnym dodaniu książki.\n");
             scenarioWriter.flush();
             ScenarioFileLoader.bStartWithDelim = false;
-            ScenarioNoFirstDelim = ScenarioFileLoader.loadScenario("testScenario.txt");
+            ret.add(ScenarioFileLoader.loadScenario("testScenario.txt"));
             scenarioWriter.close();
             writer.close();
             ScenarioFileLoader.bStartWithDelim = true;
-
-            scenarioWriter = new FileWriter(file);
-            writer = new BufferedWriter(scenarioWriter);
-            scenarioWriter.write(   "Tytuł: Dodane książki\n" +
-                    "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +
-                    "Aktor systemowy: System\n" +
-                    "\n" +
-                    "- Bibiliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
-                    "- Wyświetla się formularz.\n" +
-                    "- Bibliotekarz podaje dane książki.\n" +
-                    "- IF: Bibliotekarz pragnie dodać egzemplarze książki\n" +
-                    "-- Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +
-                    "-- System prezentuje zdefiniowane egzemplarze\n" +
-                    "-- FOR EACH egzemplarz:\n" +
-                    "--- Bibliotekarz wybiera opcję dodania egzemplarza\n" +
-                    "--- System prosi o podanie danych egzemplarza\n" +
-                    "--- Bibliotekarz podaje dane egzemplarza i zatwierdza.\n" +
-                    "--- System informuje o poprawnym dodaniu egzemplarza i prezentuje zaktualizowaną listę egzemplarzy.\n" +
-                    "- Bibliotekarz zatwierdza dodanie książki.\n" +
-                    "- System informuje o poprawnym dodaniu książki.\n");
-            scenarioWriter.flush();
-            ScenarioFileLoader.bIgnoreExcessWhitechars = false;
-            scenarioNoWhites = ScenarioFileLoader.loadScenario("testScenario.txt");
-            scenarioWriter.close();
-            writer.close();
-
             file.delete();
         }
         catch (IOException e) {
             e.printStackTrace();
         }
+        return ret;
     }
     @Test
     void scenarioProper()

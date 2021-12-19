@@ -7,19 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Pełen scenariusz
+ * Wlasciwy obiekt przetwarzania - scenariusz wymagan funkcjonalnych.
  *
  * @author I42-Alpha
  * @version 1.1
  */
 public class Scenario implements VisitableElement {
     private static final Logger logger = LoggerFactory.getLogger(Scenario.class);
-    private String name; /** Tytuł scenariusza */
+    private String name; /** Tytul scenariusza. */
     private List<String> actors = new ArrayList<>();
     private String systemActor;
-    /** Zawartość scenariusza znajduje się w obiekcie klasy SubScenario, nawet jeżeli ten nie posiada podscenariuszy */
+    /** Zawartosc scenariusza znajduje sie w obiekcie klasy SubScenario, nawet jezeli ten nie posiada podscenariuszy. */
     private SubScenario main;
 
+  /**
+     * Domyslny konstruktor Scenario.
+     */
     public Scenario(){}
 
     public void HowManyDecisions(){
@@ -51,14 +54,14 @@ public class Scenario implements VisitableElement {
     }
 
     /**
-     * Zwraca aktora z listy aktorów scenariusza
-     * @param index numer aktora, którego chcemy zwrócić. Aktorzy są numerowani w kolejności wprowadzenia
-     * @return nazwa aktora
+     * Zwraca aktora z listy aktorow scenariusza.
+     * @param index numer aktora, ktorego chcemy zwrocic. Aktorzy sa numerowani w kolejnosci wprowadzenia.
+     * @return Nazwa aktora.
      */
     public String getActor(Integer index) {
         if (index >= getActorsCount())
         {
-            logger.warn("getActor(Integer index) próbował zwrócić nieistniejący element o indeksie "
+            logger.warn("getActor(Integer) probowal zwrocic nieistniejacy element o indeksie "
                     + index.toString());
             return null;
         }
@@ -66,14 +69,14 @@ public class Scenario implements VisitableElement {
     }
 
     /**
-     * Nadpisuje wybranego aktora w liście aktorów
-     * @param index indeks aktora, który zostanie ndapisany
-     * @param actor nowa nazwa aktora
+     * Nadpisuje wybranego aktora w liscie aktorow.
+     * @param index indeks aktora, ktory zostanie ndapisany.
+     * @param actor nowa nazwa aktora.
      */
     public void setActor(Integer index, String actor) {
         if (index >= getActorsCount())
         {
-            logger.warn("setActor(Integer index, String actor) próbował nadpisać nieistniejący element o indeksie "
+            logger.warn("setActor(Integer, String) probowal nadpisac nieistniejacy element o indeksie "
                     + index.toString());
             return;
         }
@@ -81,15 +84,15 @@ public class Scenario implements VisitableElement {
     }
 
     /**
-     * Dodaje aktora na koniec listy aktorów
-     * @param actor nazwa aktora
+     * Dodaje aktora na koniec listy aktorow.
+     * @param actor Nazwa aktora.
      */
     public void addActor(String actor) { actors.add(actor);
     }
 
     /**
-     * Zwraca rozmiar listy aktorów
-     * @return rozmiar
+     * Zwraca rozmiar listy aktorow.
+     * @return Rozmiar listy aktorow.
      */
     public Integer getActorsCount() {
         return actors.size();
