@@ -13,8 +13,8 @@ public class ScenarioTextifier implements Visitor{
 
     public ScenarioTextifier(){
         this.depth = 0;
-        this.text = new String();
-        this.stepPrefix ="";
+        this.text = "";
+        this.stepPrefix = "";
     }
 
     @Override

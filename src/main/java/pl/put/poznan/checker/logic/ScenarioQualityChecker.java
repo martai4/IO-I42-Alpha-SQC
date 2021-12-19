@@ -9,13 +9,23 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Odpowiada za logikę wczytywania, sprawdzania poprawności i przetwarzania scenariuszy
+ * Odpowiada za logike wczytywania, sprawdzania poprawnosci i przetwarzania {@link pl.put.poznan.checker.scenario.Scenario scenariuszy}.
  *
  * @author I42-Alpha
- * @version 1.2
+ * @version 1.0
  */
 public class ScenarioQualityChecker
 {
+    /**
+     * Domyslny konstruktor ScenarioQualityChecker.
+     */
+    public ScenarioQualityChecker(){
+
+    }
+    /**
+     * Zwraca rozmiar {@link pl.put.poznan.checker.scenario.Scenario scenariusza} przy pomocy obiektu
+     * {@link pl.put.poznan.checker.logic.LengthVisitor LengthVisitor}.
+     */
     public int getScenarioSize(Scenario scenario)
     {
         LengthVisitor visitor = new LengthVisitor();

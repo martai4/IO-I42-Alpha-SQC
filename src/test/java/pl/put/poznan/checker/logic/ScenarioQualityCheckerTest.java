@@ -40,6 +40,13 @@ class ScenarioQualityCheckerTest {
         checkLoadedScenario(ScenarioNoFirstDelim);
     }
 
+    @Test
+    void scenarioEmpty()
+    {
+        ScenarioQualityChecker checker = new ScenarioQualityChecker();
+        Assertions.assertEquals(0, checker.getScenarioSize(new Scenario()));
+    }
+
     void checkLoadedScenario(Scenario scenario) {
         ScenarioQualityChecker checker = new ScenarioQualityChecker();
         Assertions.assertEquals(13,checker.getScenarioSize(scenario));

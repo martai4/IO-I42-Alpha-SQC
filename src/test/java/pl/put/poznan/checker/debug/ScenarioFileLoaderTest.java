@@ -14,16 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScenarioFileLoaderTest {
-    private static Scenario scenario, scenarioRandomWhites, ScenarioNoFirstDelim, scenarioNoWhites;
+    private static Scenario scenario, scenarioNoWhites, scenarioRandomWhites, ScenarioNoFirstDelim;
 
     @BeforeAll
     static void setSampleScenarios()
     {
         List<Scenario> list = createSampleScenarios();
         scenario = list.get(0);
-        scenarioRandomWhites = list.get(1);
-        ScenarioNoFirstDelim = list.get(2);
-        scenarioNoWhites = list.get(3);
+        scenarioNoWhites = list.get(1);
+        scenarioRandomWhites = list.get(2);
+        ScenarioNoFirstDelim = list.get(3);
     }
 
     public static List<Scenario> createSampleScenarios()
@@ -32,8 +32,8 @@ public class ScenarioFileLoaderTest {
         ScenarioFileLoader.delim = "-";
         ScenarioFileLoader.bIgnoreExcessWhitechars = true;
         ScenarioFileLoader.bStartWithDelim = true;
-        File file = new File("testScenario.txt");
         try {
+            File file = new File("testScenario.txt");
             FileWriter scenarioWriter = new FileWriter(file);
             BufferedWriter writer = new BufferedWriter(scenarioWriter);
 
@@ -57,6 +57,9 @@ public class ScenarioFileLoaderTest {
 
             scenarioWriter.flush();
             ret.add(ScenarioFileLoader.loadScenario("testScenario.txt"));
+            ScenarioFileLoader.bIgnoreExcessWhitechars = false;
+            ret.add(ScenarioFileLoader.loadScenario("testScenario.txt"));
+            ScenarioFileLoader.bIgnoreExcessWhitechars = true;
             scenarioWriter.close();
             writer.close();
 
@@ -109,32 +112,6 @@ public class ScenarioFileLoaderTest {
             scenarioWriter.close();
             writer.close();
             ScenarioFileLoader.bStartWithDelim = true;
-
-            scenarioWriter = new FileWriter(file);
-            writer = new BufferedWriter(scenarioWriter);
-            scenarioWriter.write(   "Tytuł: Dodane książki\n" +
-                    "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +
-                    "Aktor systemowy: System\n" +
-                    "\n" +
-                    "- Bibiliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
-                    "- Wyświetla się formularz.\n" +
-                    "- Bibliotekarz podaje dane książki.\n" +
-                    "- IF: Bibliotekarz pragnie dodać egzemplarze książki\n" +
-                    "-- Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +
-                    "-- System prezentuje zdefiniowane egzemplarze\n" +
-                    "-- FOR EACH egzemplarz:\n" +
-                    "--- Bibliotekarz wybiera opcję dodania egzemplarza\n" +
-                    "--- System prosi o podanie danych egzemplarza\n" +
-                    "--- Bibliotekarz podaje dane egzemplarza i zatwierdza.\n" +
-                    "--- System informuje o poprawnym dodaniu egzemplarza i prezentuje zaktualizowaną listę egzemplarzy.\n" +
-                    "- Bibliotekarz zatwierdza dodanie książki.\n" +
-                    "- System informuje o poprawnym dodaniu książki.\n");
-            scenarioWriter.flush();
-            ScenarioFileLoader.bIgnoreExcessWhitechars = false;
-            ret.add(ScenarioFileLoader.loadScenario("testScenario.txt"));
-            scenarioWriter.close();
-            writer.close();
-
             file.delete();
         }
         catch (IOException e) {
