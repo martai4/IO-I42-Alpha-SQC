@@ -21,14 +21,6 @@ public class SubScenario implements VisitableElement
     private static final Logger logger = LoggerFactory.getLogger(SubScenario.class);
     private List<Step> steps = new ArrayList<>();
 
-    public boolean Is_w2_start_w1(String w1, String w2,int start_pos){
-        for (int i=0;i<w1.length();i++){
-            if(w1.charAt(i) != w2.charAt(i+start_pos)){
-                return false;
-            }
-        }
-        return true;
-    }
 
     /**
      * Domyslny konstruktor SubScenario.
@@ -37,14 +29,24 @@ public class SubScenario implements VisitableElement
 
     }
 
-    public int HowManyDecisions(){
+    public boolean Is_start_w1_w2(String w1, String w2,int start_pos){
+        for (int i=0;i<w1.length();i++){
+            if(w1.charAt(i) != w2.charAt(i+start_pos)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+        public int HowManyDecisions(){
         int counter=0;
-        String k1="IF";
-        String k2="ELSE";
-        String k3="FOR EACH";
         for (Step s : steps) {
-            if(Is_w2_start_w1(k1, String.valueOf(s),0) || Is_w2_start_w1(k2,String.valueOf(s),0) || Is_w2_start_w1(k3,String.valueOf(s),0)){
-                counter=counter+1;
+            if(s.IS_start_from_decision()){
+                counter+=1;
+            }
+            if(s.getChild()!=null){
+                counter+=s.getChild().HowManyDecisions();
             }
         }
         return counter;
@@ -52,7 +54,7 @@ public class SubScenario implements VisitableElement
 
     public boolean CheckActors(List<String> actors,String step, int start) {
         for (String s : actors) {
-            if(Is_w2_start_w1(s, step,start)){
+            if( Is_start_w1_w2(s, step,start)){
                 return true;
             }
         }
@@ -64,29 +66,34 @@ public class SubScenario implements VisitableElement
         String k1="IF";
         String k2="ELSE";
         String k3="FOR EACH";
-        for (Step s : steps)
-            if(Is_w2_start_w1(k1, String.valueOf(s),0)){
-                if (!CheckActors(actors, String.valueOf(s),k1.length()+1)) {
-                    odpowiedz.add(String.valueOf(s));
+        for (Step s : steps) {
+            if (Is_start_w1_w2(k1, s.getText(), 0)) {
+                if (!CheckActors(actors, s.getText(), k1.length() + 1)) {
+                    odpowiedz.add(s.getText());
+                }
+            } else if (Is_start_w1_w2(k2, s.getText(), 0)) {
+                if (!CheckActors(actors, s.getText(), k2.length() + 1)) {
+                    odpowiedz.add(s.getText());
+                }
+            } else if (Is_start_w1_w2(k3, s.getText(), 0)) {
+                if (!CheckActors(actors, s.getText(), k3.length() + 1)) {
+                    odpowiedz.add(s.getText());
+                }
+            } else {
+                if (!CheckActors(actors, s.getText(), 0)) {
+                    odpowiedz.add(s.getText());
                 }
             }
-            else if(Is_w2_start_w1(k2,String.valueOf(s),0)) {
-                if (!CheckActors(actors,String.valueOf(s),k2.length()+1)) {
-                    odpowiedz.add(String.valueOf(s));
+            if(s.getChild()!=null){
+                List<String> odpowiedz_pom= new ArrayList<>();
+                odpowiedz_pom=(s.getChild().ListNoActorsErrors(actors));
+                for (String pom : odpowiedz_pom){
+                    odpowiedz.add(pom);
                 }
             }
-            else if(Is_w2_start_w1(k3,String.valueOf(s),0)) {
-                if (!CheckActors(actors,String.valueOf(s),k3.length()+1)) {
-                    odpowiedz.add(String.valueOf(s));
-                }
-            }
-            else {
-                if (!CheckActors(actors,String.valueOf(s),0)) {
-                    odpowiedz.add(String.valueOf(s));
-                }
-            }
-            return odpowiedz;
         }
+        return odpowiedz;
+    }
 
     public List<Step> getSteps() {
         return steps;

@@ -21,6 +21,25 @@ public class Step implements VisitableElement {
      */
     public Step() { }
 
+    public boolean Is_w2_start_w1(String w1, String w2){
+        for (int i=0;i<w1.length();i++){
+            if(w1.charAt(i) != w2.charAt(i)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean IS_start_from_decision(){
+        String k1="IF";
+        String k2="ELSE";
+        String k3="FOR EACH";
+        if(Is_w2_start_w1(k1, text) || Is_w2_start_w1(k2,text) || Is_w2_start_w1(k3,text)){
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Konstruktor Step, ustawia zawartosc tekstowa.
      * @param stepText zawartosc kroku

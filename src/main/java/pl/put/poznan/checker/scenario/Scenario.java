@@ -34,7 +34,6 @@ public class Scenario implements VisitableElement {
         return main.HowManyDecisions();
     }
 
-    //todo:poprawic funckje, zwraca napisy w postaci "pl.put.poznan.checker.scenario.Step@2f56ffe7"
     public List<String> ShowActorsErrors() {
         List<String> odpowiedz = new ArrayList<>();
         odpowiedz = main.ListNoActorsErrors(actors);
