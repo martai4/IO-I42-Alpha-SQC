@@ -36,10 +36,7 @@ public class Scenario implements VisitableElement {
 
     public List<String> ShowActorsErrors() {
         List<String> odpowiedz = new ArrayList<>();
-        odpowiedz = main.ListNoActorsErrors(actors);
-//        for (String s : odpowiedz) {
-//            System.out.println(s);
-//        }
+        odpowiedz = main.ListNoActorsErrors(actors,systemActor);
         return odpowiedz;
     }
 

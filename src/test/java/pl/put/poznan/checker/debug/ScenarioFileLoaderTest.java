@@ -41,10 +41,10 @@ public class ScenarioFileLoaderTest {
                     "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +
                     "Aktor systemowy: System\n" +
                     "\n" +
-                    "- Bibiliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
+                    "- Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
                     "- Wyświetla się formularz.\n" +
                     "- Bibliotekarz podaje dane książki.\n" +
-                    "- IF: Bibliotekarz pragnie dodać egzemplarze książki\n" +
+                    "- IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
                     "-- Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +
                     "-- System prezentuje zdefiniowane egzemplarze\n" +
                     "-- FOR EACH egzemplarz:\n" +
@@ -69,10 +69,10 @@ public class ScenarioFileLoaderTest {
                     "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +"\n" +"\n" +
                     "Aktor systemowy: System\n" +
                     "\n" +
-                    "- Bibiliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +"\n" +
+                    "- Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +"\n" +
                     "- Wyświetla się formularz.\n" +"\n" +"\n" +
                     "- Bibliotekarz podaje dane książki.\n" +"\n" +
-                    "- IF: Bibliotekarz pragnie dodać egzemplarze książki\n" +
+                    "- IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
                     "-- Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +"\n" +
                     "-- System prezentuje zdefiniowane egzemplarze\n" +
                     "-- FOR EACH egzemplarz:\n" +"\n" +"\n" +
@@ -93,10 +93,10 @@ public class ScenarioFileLoaderTest {
                     "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +
                     "Aktor systemowy: System\n" +
                     "\n" +
-                    " Bibiliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
+                    " Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
                     " Wyświetla się formularz.\n" +
                     " Bibliotekarz podaje dane książki.\n" +
-                    " IF: Bibliotekarz pragnie dodać egzemplarze książki\n" +
+                    " IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
                     "- Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +
                     "- System prezentuje zdefiniowane egzemplarze\n" +
                     "- FOR EACH egzemplarz:\n" +
@@ -152,13 +152,13 @@ public class ScenarioFileLoaderTest {
 
         List<Step> steps = main.getSteps();
         Assertions.assertEquals(6,steps.size());
-        Assertions.assertEquals((bRespectWhites ? " " : "") + "Bibiliotekarz wybiera opcje dodania nowej pozycji książkowej", steps.get(0).getText());
+        Assertions.assertEquals((bRespectWhites ? " " : "") + "Bibliotekarz wybiera opcje dodania nowej pozycji książkowej", steps.get(0).getText());
         Assertions.assertNull(steps.get(0).getChild());
         Assertions.assertEquals((bRespectWhites ? " " : "") + "Wyświetla się formularz.", steps.get(1).getText());
         Assertions.assertNull(steps.get(1).getChild());
         Assertions.assertEquals((bRespectWhites ? " " : "") + "Bibliotekarz podaje dane książki.", steps.get(2).getText());
         Assertions.assertNull(steps.get(2).getChild());
-        Assertions.assertEquals((bRespectWhites ? " " : "") + "IF: Bibliotekarz pragnie dodać egzemplarze książki", steps.get(3).getText());
+        Assertions.assertEquals((bRespectWhites ? " " : "") + "IF Bibliotekarz pragnie dodać egzemplarze książki", steps.get(3).getText());
         Assertions.assertNotNull(steps.get(3).getChild());
 
         List<Step> subSteps = steps.get(3).getChild().getSteps();

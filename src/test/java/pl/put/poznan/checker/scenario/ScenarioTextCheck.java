@@ -1,7 +1,9 @@
 package pl.put.poznan.checker.scenario;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import pl.put.poznan.checker.debug.ScenarioFileLoader;
+import pl.put.poznan.checker.debug.ScenarioFileLoaderTest;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,32 +15,24 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ScenarioTextCheck {
+    private static Scenario scenario;
 
+    @BeforeAll
+    static void setSampleScenario()
+    {
+        List<Scenario> list = ScenarioFileLoaderTest.createSampleScenarios();
+        scenario = list.get(0);
+    }
     @Test
     void howManyDecisions() {
-        ScenarioFileLoader t=new ScenarioFileLoader();
-        Scenario test= null;
-        try {
-            test = t.loadScenario("testScenario.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        assertEquals(2,test.HowManyDecisions());
+        assertEquals(2,scenario.HowManyDecisions());
     }
 
     @Test
     void showActorsErrors() {
-        ScenarioFileLoader t=new ScenarioFileLoader();
-        Scenario test= null;
-        try {
-            test = t.loadScenario("testScenario.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         List<String> lis=new ArrayList<>();
-        lis.add("WyĹ›wietla siÄ™ formularz.");
-        lis.add("System prezentuje zdefiniowane egzemplarze");
+        lis.add("Wyświetla się formularz.");
         lis.add("FOR EACH egzemplarz:");
-        assertEquals(lis,test.ShowActorsErrors());
+        assertEquals(lis,scenario.ShowActorsErrors());
     }
 }
