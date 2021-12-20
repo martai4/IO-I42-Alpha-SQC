@@ -12,7 +12,7 @@ import java.util.List;
  * Wlasciwy obiekt przetwarzania - scenariusz wymagan funkcjonalnych.
  *
  * @author I42-Alpha
- * @version 1.1
+ * @version 1.0
  */
 public class Scenario implements VisitableElement {
     private static final Logger logger = LoggerFactory.getLogger(Scenario.class);

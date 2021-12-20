@@ -4,7 +4,6 @@ import pl.put.poznan.checker.scenario.Scenario;
 import pl.put.poznan.checker.scenario.Step;
 import pl.put.poznan.checker.scenario.SubScenario;
 
-//todo: przerzucić do logiki
 public interface Visitor {
     Visitor visit(Scenario scenario);
 

@@ -7,7 +7,7 @@ import pl.put.poznan.checker.logic.visitor.base.Visitor;
  * Pojedynczy krok scenariusza
  *
  * @author I42-Alpha
- * @version 1.1
+ * @version 1.0
  */
 public class Step implements VisitableElement {
     private String text;

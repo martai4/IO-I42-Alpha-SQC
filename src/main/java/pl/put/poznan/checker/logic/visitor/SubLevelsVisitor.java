@@ -10,6 +10,9 @@ import pl.put.poznan.checker.logic.visitor.base.Visitor;
 /**
  * Klasa implementuje wzorzec projektowy "Wizytator" w celu spelnienia funkcjonalnosci reprezentowania scenariuszy
  * tylko do okreslonego poziomu zaglebienia.
+ *
+ * @author I42-Alpha
+ * @version 1.0
  */
 public class SubLevelsVisitor implements Visitor {
 

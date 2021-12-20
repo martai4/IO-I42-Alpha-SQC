@@ -10,7 +10,7 @@ import pl.put.poznan.checker.logic.visitor.base.Visitor;
  * {@link pl.put.poznan.checker.scenario.Scenario scenariusza}.
  *
  * @author I42-Alpha
- * @version 1.1
+ * @version 1.0
  */
 public class LengthVisitor implements Visitor {
     private int size;

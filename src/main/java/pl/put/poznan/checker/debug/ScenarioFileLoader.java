@@ -17,7 +17,7 @@ import java.util.List;
  * Wczytuje plik tesktowy i zwraca obiekt typu {@link pl.put.poznan.checker.scenario.Scenario Scenariusz}.
  *
  * @author I42-Alpha
- * @version 1.1
+ * @version 1.0
  */
 public class ScenarioFileLoader {
     private static final Logger logger = LoggerFactory.getLogger(ScenarioFileLoader.class);

@@ -10,7 +10,7 @@ import java.util.List;
  * Zbior wszystkich {@link pl.put.poznan.checker.scenario.Scenario scenariuszy} wczytanych przez program.
  *
  * @author I42-Alpha
- * @version 1.1
+ * @version 1.0
  */
 @Component
 public class ScenarioRepository

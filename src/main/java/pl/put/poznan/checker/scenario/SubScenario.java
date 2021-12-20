@@ -14,7 +14,7 @@ import java.util.List;
  * ktorego zaczyna sie przetwarzanie.
  *
  * @author I42-Alpha
- * @version 1.1
+ * @version 1.0
  */
 public class SubScenario implements VisitableElement {
     private static final Logger logger = LoggerFactory.getLogger(SubScenario.class);
