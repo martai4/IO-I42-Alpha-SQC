@@ -67,13 +67,13 @@ public class SubScenario implements VisitableElement {
             for (String k : klucz) {
                 if (Is_start_w1_w2(k, s.getText(), 0)) {
                     z=false;
-                    if (!CheckActors(actors, s.getText(), k.length() + 1) && !Is_start_w1_w2(sys, s.getText(), 0)) {
+                    if (!CheckActors(actors, s.getText(), k.length() + 1) && (sys==null|| !Is_start_w1_w2(sys, s.getText(), 0)))  {
                         odpowiedz.add(s.getText());
                     }
                 }
 
             }
-            if (z && (!CheckActors(actors, s.getText(), 0) && !Is_start_w1_w2(sys, s.getText(), 0))) {
+            if (z && (!CheckActors(actors, s.getText(), 0) && (sys==null || !Is_start_w1_w2(sys, s.getText(), 0)))) {
                 odpowiedz.add(s.getText());
             }
             if (s.getChild() != null) {
