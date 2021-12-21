@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @version 1.0
  */
 @SpringBootApplication(scanBasePackages = {"pl.put.poznan.checker.rest"})
+
 public class ScenarioQualityCheckerApplication {
     private static final Logger logger = LoggerFactory.getLogger(ScenarioQualityCheckerApplication.class);
 
