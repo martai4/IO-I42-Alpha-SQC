@@ -2,10 +2,10 @@ package pl.put.poznan.checker.logic.visitor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.put.poznan.checker.logic.visitor.base.Visitor;
 import pl.put.poznan.checker.scenario.Scenario;
 import pl.put.poznan.checker.scenario.Step;
 import pl.put.poznan.checker.scenario.SubScenario;
-import pl.put.poznan.checker.logic.visitor.base.Visitor;
 
 /**
  * Klasa implementuje wzorzec projektowy "Wizytator" w celu spelnienia funkcjonalnosci reprezentowania scenariuszy
@@ -63,7 +63,8 @@ public class SubLevelsVisitor implements Visitor {
     }
 
     /**
-     * Implementacja interfejsu wzorca projektowego wizytator
+     * Implementacja interfejsu wzorca projektowego wizytator. Podany scenariusz zostaje zwrocony z nowa nazwa z
+     * poziomem zaglebienia podscenariuszy do poziomu okreslonego podczas wywolania konstruktora.
      *
      * @param toConvert Scenariusz, ktory ma zostac przetworzony
      * @return
