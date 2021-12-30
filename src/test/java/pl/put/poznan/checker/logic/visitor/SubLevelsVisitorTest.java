@@ -5,10 +5,14 @@ import org.junit.jupiter.api.Test;
 import pl.put.poznan.checker.debug.ScenarioFileLoaderTest;
 import pl.put.poznan.checker.scenario.Scenario;
 import pl.put.poznan.checker.scenario.Step;
+import pl.put.poznan.checker.scenario.SubScenario;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class SubLevelsVisitorTest {
 
@@ -65,5 +69,74 @@ class SubLevelsVisitorTest {
         assertThrows(Exception.class, () -> {
             test(0);
         });
+    }
+
+    @Test
+    public void testWithMocks() {
+        Scenario mockedScenario = mock(Scenario.class);
+        SubScenario mockedSubScenario = mock(SubScenario.class);
+        when(mockedScenario.getMain()).thenReturn(mockedSubScenario);
+        when(mockedScenario.getSystemActor()).thenReturn("Mocked system actor");
+        when(mockedScenario.getActors()).thenReturn(new ArrayList<String>() {{
+            add("Mocked actor");
+        }});
+
+        ArrayList<Step> mockedSteps = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            Step mockedStep = mock(Step.class);
+            when(mockedStep.getText()).thenReturn("Step " + String.valueOf(i));
+            if (i % 2 != 0) {
+                when(mockedStep.getChild()).thenReturn(null);
+            } else {
+                SubScenario innerMockedSubscenario = mock(SubScenario.class);
+                Step newMockedStep = mock(Step.class);
+                when(newMockedStep.getText()).thenReturn("Step substep " + String.valueOf(i));
+                when(mockedStep.getChild()).thenReturn(innerMockedSubscenario);
+                when(innerMockedSubscenario.getSteps()).thenReturn(new ArrayList<>() {{
+                    add(newMockedStep);
+                }});
+            }
+        }
+
+        when(mockedSubScenario.getSteps()).thenReturn(mockedSteps);
+
+        SubLevelsVisitor visitor1;
+        SubLevelsVisitor visitor3;
+        try {
+            visitor1 = new SubLevelsVisitor(1, "Test lvl 1");
+            visitor3 = new SubLevelsVisitor(3, "Test lvl 3");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        visitor1.visit(mockedScenario);
+        visitor3.visit(mockedScenario);
+
+        // porownanie nazw
+        assertEquals("Test lvl 1", visitor1.getConverted().getName());
+        assertEquals("Test lvl 3", visitor3.getConverted().getName());
+
+        // porownanie poziomu 1
+        SubScenario converted1 = visitor1.getConverted().getMain();
+        for (int i = 0; i < mockedSteps.size(); i++) {
+            assertEquals(mockedSteps.get(i).getText(), converted1.getSteps().get(i).getText());
+            assertNull(converted1.getSteps().get(i).getChild());
+        }
+
+        // porownanie poziomu 3
+        SubScenario converted3 = visitor3.getConverted().getMain();
+        for (int i = 0; i < mockedSteps.size(); i++) {
+            assertEquals(mockedSteps.get(i).getText(), converted3.getSteps().get(i).getText());
+            assertEquals(mockedSteps.get(i).getChild(), converted3.getSteps().get(i).getChild());
+
+            for (int j = 0; j < mockedSteps.get(i).getChild().getSteps().size(); j++) {
+                Step ms = mockedSteps.get(i).getChild().getSteps().get(j);
+                Step s = converted3.getSteps().get(i).getChild().getSteps().get(j);
+                assertEquals(ms.getText(), s.getText());
+                assertEquals(ms.getChild(), s.getChild());
+            }
+
+        }
+
     }
 }
