@@ -20,7 +20,7 @@ jobs:
           name: ScenarioQualityCheckerREST.jar
           path: build
       - name: Javadocs
-        run: mvn javadoc:javadoc -encoding utf8 -charset utf8
+        run: mvn javadoc:javadoc
       - uses: actions/upload-artifact@v2
         with:
           name: Docs
