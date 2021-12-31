@@ -5,27 +5,35 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+
 /**
  * Serce programu w wersji zdalnego API.
  *
  * @author I42-Alpha
- * @version 1.0
+ * @version 2.0
  */
 @SpringBootApplication(scanBasePackages = {"pl.put.poznan.checker.rest"})
 
-public class ScenarioQualityCheckerApplication {
+public class ScenarioQualityCheckerApplication
+{
     private static final Logger logger = LoggerFactory.getLogger(ScenarioQualityCheckerApplication.class);
 
     /**
-     * Domyslny konstruktor ScenarioQualityCheckerApplication.
+     * Domyślny konstruktor ScenarioQualityCheckerApplication.
      * */
     public ScenarioQualityCheckerApplication() {}
     /**
-     * Glowna metoda uruchamiana przy starcie programu.
-     * @param args argumenty wiersza polecen
+     * Główna metoda uruchamiana przy starcie programu.
+     * @param args argumenty wiersza poleceń
      * */
-    public static void main(String[] args) {
-        logger.info("main(String[]) wystartowal");
+    public static void main(String[] args)
+    {
+        System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8));
+        logger.info("Program wystartował.");
         SpringApplication.run(ScenarioQualityCheckerApplication.class, args);
     }
 }

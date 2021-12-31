@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
     <properties>
         <java.version>11</java.version>
-        <project.build.sourceEncoding>windows-1250</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>windows-1250</project.reporting.outputEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <parent>
@@ -61,6 +61,16 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>18-ea+8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>13</version>
         </dependency>
     </dependencies>
 
