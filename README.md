@@ -1,4 +1,4 @@
-# IO-I42-Alpha-SQC
+# IO-I42-Alpha-SQC [![Java CI](https://github.com/martai4/IO-I42-Alpha-SQC/actions/workflows/ci.yml/badge.svg?branch=IIAS-35-main)](https://github.com/martai4/IO-I42-Alpha-SQC/actions/workflows/ci.yml) 
 
 Indeksy:
 
@@ -14,10 +14,10 @@ Dla analityków dokumentujących wymagania funkcjonalne za pomocą scenariuszy n
 ---
 
 ## Notacja scenariuszy:
-- [ ] Scenariusz zawiera nagłówek określający jego tytuł i aktorów (zewnętrznych oraz system)
+- [x] Scenariusz zawiera nagłówek określający jego tytuł i aktorów (zewnętrznych oraz system)
 
-- [ ] Scenariusz składa się z kroków (każdy krok zawiera tekst)
+- [x] Scenariusz składa się z kroków (każdy krok zawiera tekst)
 
-- [ ]  Kroki mogą zawierać pod-scenariusze (dowolny poziom zagłębień)
+- [x]  Kroki mogą zawierać pod-scenariusze (dowolny poziom zagłębień)
 
-- [ ]  Kroki mogą się zaczynać od słów kluczowych: IF, ELSE, FOR EACH
+- [x]  Kroki mogą się zaczynać od słów kluczowych: IF, ELSE, FOR EACH
