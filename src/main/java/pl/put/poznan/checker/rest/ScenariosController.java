@@ -132,7 +132,7 @@ public class ScenariosController {
      * Uzywany url: ip_hosta/toLevel/ {id} {lvl} {name}
      *
      * @param id    ID scenariusza, ktory ma zostac przetworzony
-     * @param level Maksyamalny poziom zaglebienia, ktory ma zawawierac przetworzony scenariusz. Musi byc >= 1
+     * @param level Maksyamalny poziom zaglebienia, ktory ma zawawierac przetworzony scenariusz. Musi byc wiekszy od 1
      * @param name  Nazwa, pod ktora ma zostac zapisany przetworzony scenariusz
      * @return Odpwoiedz HTTP, w ktorej ciele znajduje sie JSON z przetoworzonym scenariuszem, lub blad 404 jesli nie
      * znaleziono scenariusza o wskazanym ID
