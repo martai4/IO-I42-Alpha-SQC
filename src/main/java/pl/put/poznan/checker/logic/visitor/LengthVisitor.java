@@ -1,71 +1,94 @@
 package pl.put.poznan.checker.logic.visitor;
-
-import pl.put.poznan.checker.scenario.Scenario;
-import pl.put.poznan.checker.scenario.Step;
-import pl.put.poznan.checker.scenario.SubScenario;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.put.poznan.checker.logic.visitor.base.Visitor;
+import pl.put.poznan.checker.scenario.Scenario;
+import pl.put.poznan.checker.scenario.SubScenario;
+import pl.put.poznan.checker.scenario.Step;
 
 /**
- * {@link Visitor Wizytator} odpowiedzialny za zwracanie rozmiaru
- * {@link pl.put.poznan.checker.scenario.Scenario scenariusza}.
+ * {@link Visitor Wizytator} odpowiedzialny za zwracanie <b>rozmiaru</b> {@link Scenario Scenariusza}.
  *
  * @author I42-Alpha
- * @version 1.0
+ * @version 2.0
  */
-public class LengthVisitor implements Visitor {
-    private int size;
+public class LengthVisitor implements Visitor
+{
+    private static final Logger logger = LoggerFactory.getLogger(LengthVisitor.class);
+    private int size = 0;
 
     /**
-     * Domyslny konstruktor LengthVisitor.
+     * Domyślny konstruktor <code>LengthVisitor</code>.
      */
-    public LengthVisitor(){
+    public LengthVisitor() {}
 
-    }
     /**
-     * Odwiedza {@link pl.put.poznan.checker.scenario.SubScenario podscenariusz} glowny
-     * {@link pl.put.poznan.checker.scenario.Scenario scenariusza}.
+     * Odwiedza {@link SubScenario <b>PodScenariusz</b>} <b>główny</b>
+     * {@link Scenario Scenariusza}.
      *
-     * @param scenario {@link pl.put.poznan.checker.scenario.Scenario scenariusz}, ktorego rozmiar chcemy obliczyc
-     * @return Zwraca wizytatora (siebie).
+     * @param scenario {@link Scenario Scenariusz}, którego <b>rozmiar</b> chcemy obliczyć.
+     * @return <i>Wizytator</i> (siebie).
      */
     @Override
-    public Visitor visit(Scenario scenario) {
-        if (scenario.getName() != null)
-             scenario.getMain().acceptVisitor(this);
-        return this;
+    public Visitor visit(Scenario scenario)
+    {
+        if (scenario == null)
+        {
+            logger.warn("Próbowano odwiedzić Scenariusz, który nie istnieje");
+            return this;
+        }
+        logger.debug("Rozpoczęto przetwarzanie Scenariusza {}", scenario.getName());
+        Visitor visit = visit(scenario.getMain());
+        logger.debug("Zakończono przetwarzanie Scenariusza {}", scenario.getName());
+        return visit;
     }
 
     /**
-     * Odwiedza wszystkie {@link pl.put.poznan.checker.scenario.Step kroki} {@link pl.put.poznan.checker.scenario.SubScenario podscenariusza}.
+     * Odwiedza wszystkie {@link Step Kroki} {@link SubScenario PodScenariusza}.
      *
-     * @param subScenario {@link pl.put.poznan.checker.scenario.SubScenario podscenariusz}, ktory odwiedzil wizytator
-     * @return Zwraca wizytatora (siebie).
+     * @param subScenario {@link SubScenario PodScenariusz}, który ma być odwiedzony
+     * @return <i>Wizytator</i> (siebie).
      */
     @Override
-    public Visitor visit(SubScenario subScenario) {
+    public Visitor visit(SubScenario subScenario)
+    {
+        if (subScenario == null)
+        {
+            logger.warn("Próbowano odwiedzić PodScenariusz, który nie istnieje");
+            return this;
+        }
+
         for (Step step : subScenario.getSteps())
             step.acceptVisitor(this);
+
         return this;
     }
+
     /**
-     * Zwieksza licznik {@link pl.put.poznan.checker.scenario.Step krokow} o jeden i odwiedzia
-     * {@link pl.put.poznan.checker.scenario.SubScenario podscenariusz}, jezeli krok go posiada.
+     * Zwiększa licznik {@link Step Kroków} o jeden i odwiedzia {@link SubScenario PodScenariusz},
+     * jeżeli <i>Krok</i> go posiada.
      *
-     * @param step {@link pl.put.poznan.checker.scenario.Step krok}, ktory odwiedzil wizytator
-     * @return Zwraca wizytatora (siebie).
+     * @param step {@link Step Krok}, który ma odwiedzić
+     * @return <i>Wizytator</i> (siebie).
      */
     @Override
-    public Visitor visit(Step step) {
+    public Visitor visit(Step step)
+    {
+        ++size;
         SubScenario subScenario = step.getChild();
         if (subScenario != null)
-            subScenario.acceptVisitor(this);
-        ++size;
+            return subScenario.acceptVisitor(this);
+
         return this;
     }
+
     /**
-     * Zwraca rozmiar
+     * Zwraca <b>rozmiar</b>.
+     *
+     * @return <b>Rozmiar</b> - liczba wszystkich {@link Step Kroków} w {@link Scenario Scenariuszu}.
      */
-    public int getSize(){
+    public int getSize()
+    {
         return size;
     }
 }

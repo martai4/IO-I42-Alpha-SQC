@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Zbior wszystkich {@link pl.put.poznan.checker.scenario.Scenario scenariuszy} wczytanych przez program.
+ * Zbiór wszystkich {@link Scenario Scenariuszy} wczytanych przez program.
  *
  * @author I42-Alpha
- * @version 1.0
+ * @version 2.0
  */
 @Component
 public class ScenarioRepository
@@ -19,34 +19,31 @@ public class ScenarioRepository
     private final List<Scenario> scenarios = new ArrayList<>();
 
     /**
-     * Domyslny konstruktor ScenarioRepository.
+     * Domyślny konstruktor <code>ScenarioRepository</code>.
      */
-    public ScenarioRepository(){
+    public ScenarioRepository()
+    {
 
     }
 
     /**
-     * Dodaje {@link pl.put.poznan.checker.scenario.Scenario scenariusz} do repozytorium.
-     * @param scenario dodany scenariusz
+     * Dodaje {@link Scenario Scenariusz} do repozytorium.
+     * @param scenario dodany <i>Scenariusz</i>
      */
     public void addScenario(Scenario scenario)
     {
         if (scenario == null)
         {
-            logger.warn("addScenario(Scenario) probowano dodac pusty scenariusz");
+            logger.warn("Próbowano dodać pusty Scenariusz do repozytorium");
             return;
         }
-        logger.warn("addScenario(Scenario) probuje dodac nowy scenariusz o nazwie \"" + scenario.getName() + "\"");
-        //todo: check poprawności scenariusza (za pomoca ScenarioQualityChecker)
-        //Integer id = lastGeneratedId.incrementAndGet();
-
-        //scenarios.put(id, scenario);
+        logger.warn("Próbuje dodać nowy Scenariusz o nazwie \"{}\"", scenario.getName());
         scenarios.add(scenario);
     }
 
     /**
-     * Zwraca rozmiar repozytorium.
-     * @return Rozmiar repozytorium.
+     * Zwraca <b>rozmiar</b> repozytorium.
+     * @return <b>Rozmiar</b> repozytorium.
      */
     public Integer getLength()
     {
@@ -54,29 +51,31 @@ public class ScenarioRepository
     }
 
     /**
-     * Zwraca {@link pl.put.poznan.checker.scenario.Scenario scenariuszy} po podaniu jego id.
-     * @param id identyfikator scenariusza
-     * @return Scenariusz z repozytorium.
+     * Zwraca {@link Scenario Scenariusz} po podaniu jego <b>id</b>.
+     * @param id identyfikator <i>Scenariusza</i>
+     * @return <i>Scenariusz</i> z repozytorium.
      */
-    public Scenario getScenario(Integer id) {
+    public Scenario getScenario(Integer id)
+    {
         if (id >= getLength())
         {
-            logger.warn("getScenario(Integer) probowal zwrocic nieistniejacy scenariusz o numerze " + id.toString());
+            logger.warn("Próbowano zwrócić nieistniejący Scenariusz o numerze " + id.toString());
             return null;
         }
         return scenarios.get(id);
     }
 
     /**
-     * Znajduje scenariusz przy pomocy jego tytulu
-     * @param name tytul scenariusza
-     * @return scenariusz
+     * Znajduje {@link Scenario Scenariusz} przy pomocy jego <b>tytułu</b>.
+     * @param name tytuł <i>Scenariusza</i>
+     * @return <i>Scenariusz</i> o podanym <b>tytule</b>.
      */
-    public Scenario getScenarioByName(String name) {
+    public Scenario getScenarioByName(String name)
+    {
         if (scenarios.stream().anyMatch(scenario -> scenario.getName().equals(name)))
             return scenarios.stream().filter(scenario -> scenario.getName().equals(name)).findFirst().get();
-        logger.warn("getScenarioByName(String) probowal zwrocic nieistniejacy scenariusz o nazwie \""
-                + name.toString() + "\"");
+
+        logger.warn("Próbowano zwrócić nieistniejący Scenariusz o nazwie \"{}\"", name.toString());
         return null;
     }
 

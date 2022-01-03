@@ -1,145 +1,135 @@
 package pl.put.poznan.checker.debug;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import pl.put.poznan.checker.logic.ScenarioFormat;
+import pl.put.poznan.checker.logic.ScenarioQualityChecker;
 import pl.put.poznan.checker.scenario.Scenario;
 import pl.put.poznan.checker.scenario.Step;
 import pl.put.poznan.checker.scenario.SubScenario;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.io.*;
 import java.util.List;
 
-public class ScenarioFileLoaderTest {
-    private static Scenario scenario, scenarioNoWhites, scenarioRandomWhites, ScenarioNoFirstDelim;
-
-    @BeforeAll
-    static void setSampleScenarios()
-    {
-        List<Scenario> list = createSampleScenarios();
-        scenario = list.get(0);
-        scenarioNoWhites = list.get(1);
-        scenarioRandomWhites = list.get(2);
-        ScenarioNoFirstDelim = list.get(3);
-    }
-
-    public static List<Scenario> createSampleScenarios()
-    {
-        List<Scenario> ret = new ArrayList<>();
-        ScenarioFileLoader.delim = "-";
-        ScenarioFileLoader.bIgnoreExcessWhitechars = true;
-        ScenarioFileLoader.bStartWithDelim = true;
-        try {
-            File file = new File("testScenario.txt");
-            FileWriter scenarioWriter = new FileWriter(file);
-            BufferedWriter writer = new BufferedWriter(scenarioWriter);
-
-            scenarioWriter.write(   "Tytuł: Dodane książki\n" +
-                    "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +
-                    "Aktor systemowy: System\n" +
-                    "\n" +
-                    "- Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
-                    "- Wyświetla się formularz.\n" +
-                    "- Bibliotekarz podaje dane książki.\n" +
-                    "- IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
-                    "-- Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +
-                    "-- System prezentuje zdefiniowane egzemplarze\n" +
-                    "-- FOR EACH egzemplarz:\n" +
-                    "--- Bibliotekarz wybiera opcję dodania egzemplarza\n" +
-                    "--- System prosi o podanie danych egzemplarza\n" +
-                    "--- Bibliotekarz podaje dane egzemplarza i zatwierdza.\n" +
-                    "--- System informuje o poprawnym dodaniu egzemplarza i prezentuje zaktualizowaną listę egzemplarzy.\n" +
-                    "- Bibliotekarz zatwierdza dodanie książki.\n" +
-                    "- System informuje o poprawnym dodaniu książki.\n");
-
-            scenarioWriter.flush();
-            ret.add(ScenarioFileLoader.loadScenario("testScenario.txt"));
-            ScenarioFileLoader.bIgnoreExcessWhitechars = false;
-            ret.add(ScenarioFileLoader.loadScenario("testScenario.txt"));
-            ScenarioFileLoader.bIgnoreExcessWhitechars = true;
-            scenarioWriter.close();
-            writer.close();
-
-            scenarioWriter = new FileWriter(file);
-            writer = new BufferedWriter(scenarioWriter);
-            scenarioWriter.write(   "\n" +"\n" +"Tytuł: Dodane książki\n" +
-                    "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +"\n" +"\n" +
-                    "Aktor systemowy: System\n" +
-                    "\n" +
-                    "- Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +"\n" +
-                    "- Wyświetla się formularz.\n" +"\n" +"\n" +
-                    "- Bibliotekarz podaje dane książki.\n" +"\n" +
-                    "- IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
-                    "-- Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +"\n" +
-                    "-- System prezentuje zdefiniowane egzemplarze\n" +
-                    "-- FOR EACH egzemplarz:\n" +"\n" +"\n" +
-                    "--- Bibliotekarz wybiera opcję dodania egzemplarza\n" +"\n" +
-                    "--- System prosi o podanie danych egzemplarza\n" +"\n" +
-                    "--- Bibliotekarz podaje dane egzemplarza i zatwierdza.\n" +"\n                 " +
-                    "--- System informuje o poprawnym dodaniu egzemplarza i prezentuje zaktualizowaną listę egzemplarzy.\n" +
-                    "- Bibliotekarz zatwierdza dodanie książki.\n" +"\n" +"\n" +"\n" +"\n" +"\n" +
-                    "- System informuje o poprawnym dodaniu książki.\n");
-            scenarioWriter.flush();
-            ret.add(ScenarioFileLoader.loadScenario("testScenario.txt"));
-            scenarioWriter.close();
-            writer.close();
-
-            scenarioWriter = new FileWriter(file);
-            writer = new BufferedWriter(scenarioWriter);
-            scenarioWriter.write("Tytuł: Dodane książki\n" +
-                    "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +
-                    "Aktor systemowy: System\n" +
-                    "\n" +
-                    " Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
-                    " Wyświetla się formularz.\n" +
-                    " Bibliotekarz podaje dane książki.\n" +
-                    " IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
-                    "- Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +
-                    "- System prezentuje zdefiniowane egzemplarze\n" +
-                    "- FOR EACH egzemplarz:\n" +
-                    "-- Bibliotekarz wybiera opcję dodania egzemplarza\n" +
-                    "-- System prosi o podanie danych egzemplarza\n" +
-                    "-- Bibliotekarz podaje dane egzemplarza i zatwierdza.\n" +
-                    "-- System informuje o poprawnym dodaniu egzemplarza i prezentuje zaktualizowaną listę egzemplarzy.\n" +
-                    " Bibliotekarz zatwierdza dodanie książki.\n" +
-                    " System informuje o poprawnym dodaniu książki.\n");
-            scenarioWriter.flush();
-            ScenarioFileLoader.bStartWithDelim = false;
-            ret.add(ScenarioFileLoader.loadScenario("testScenario.txt"));
-            scenarioWriter.close();
-            writer.close();
-            ScenarioFileLoader.bStartWithDelim = true;
-            file.delete();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ret;
-    }
+public class ScenarioFileLoaderTest
+{
     @Test
-    void scenarioProper()
+    void scenarioProper() throws IOException
     {
+        ScenarioFormat.delim = "-";
+        ScenarioFormat.bIgnoreExcessWhitechars = true;
+        ScenarioFormat.bStartWithDelim = true;
+
+        //StringReader stanowi klasę zastępczą (mock) dla FileReader, który powinien tutaj zostać wykorzystany
+        StringReader strReader = new StringReader("Tytuł: Dodane książki\n" +
+                "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +
+                "Aktor systemowy: System\n" +
+                "\n" +
+                "- Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
+                "- Wyświetla się formularz.\n" +
+                "- Bibliotekarz podaje dane książki.\n" +
+                "- IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
+                "-- Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +
+                "-- System prezentuje zdefiniowane egzemplarze\n" +
+                "-- FOR EACH egzemplarz:\n" +
+                "--- Bibliotekarz wybiera opcję dodania egzemplarza\n" +
+                "--- System prosi o podanie danych egzemplarza\n" +
+                "--- Bibliotekarz podaje dane egzemplarza i zatwierdza.\n" +
+                "--- System informuje o poprawnym dodaniu egzemplarza i prezentuje zaktualizowaną listę egzemplarzy.\n" +
+                "- Bibliotekarz zatwierdza dodanie książki.\n" +
+                "- System informuje o poprawnym dodaniu książki.\n");
+        Scenario scenario = ScenarioFileLoader.loadScenario(new BufferedReader(strReader));
         checkLoadedScenario(scenario, false);
     }
+
     @Test
-    void scenarioRandomWhites()
+    void scenarioRandomWhites() throws IOException
     {
-        checkLoadedScenario(scenarioRandomWhites, false);
+        ScenarioFormat.delim = "-";
+        ScenarioFormat.bIgnoreExcessWhitechars = true;
+        ScenarioFormat.bStartWithDelim = true;
+
+        //StringReader stanowi klasę zastępczą (mock) dla FileReader, który powinien tutaj zostać wykorzystany
+        StringReader strReader = new StringReader("\n" +"\n" +"Tytuł: Dodane książki\n" +
+            "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +"\n" +"\n" +
+            "Aktor systemowy: System\n" +
+            "\n" +
+            "- Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +"\n" +
+            "- Wyświetla się formularz.\n" +"\n" +"\n" +
+            "- Bibliotekarz podaje dane książki.\n" +"\n" +
+            "- IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
+            "-- Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +"\n" +
+            "-- System prezentuje zdefiniowane egzemplarze\n" +
+            "-- FOR EACH egzemplarz:\n" +"\n" +"\n" +
+            "--- Bibliotekarz wybiera opcję dodania egzemplarza\n" +"\n" +
+            "--- System prosi o podanie danych egzemplarza\n" +"\n" +
+            "--- Bibliotekarz podaje dane egzemplarza i zatwierdza.\n" +"\n                 " +
+            "--- System informuje o poprawnym dodaniu egzemplarza i prezentuje zaktualizowaną listę egzemplarzy.\n" +
+            "- Bibliotekarz zatwierdza dodanie książki.\n" +"\n" +"\n" +"\n" +"\n" +"\n" +
+            "- System informuje o poprawnym dodaniu książki.\n");
+        Scenario scenario = ScenarioFileLoader.loadScenario(new BufferedReader(strReader));
+        checkLoadedScenario(scenario, false);
     }
+
     @Test
-    void scenarioNoWhites()
+    void scenarioNoWhites() throws IOException
     {
-        checkLoadedScenario(scenarioNoWhites, true);
+        ScenarioFormat.delim = "-";
+        ScenarioFormat.bIgnoreExcessWhitechars = false;
+        ScenarioFormat.bStartWithDelim = true;
+
+        //StringReader stanowi klasę zastępczą (mock) dla FileReader, który powinien tutaj zostać wykorzystany
+        StringReader strReader = new StringReader("Tytuł: Dodane książki\n" +
+                "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +
+                "Aktor systemowy: System\n" +
+                "\n" +
+                "- Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
+                "- Wyświetla się formularz.\n" +
+                "- Bibliotekarz podaje dane książki.\n" +
+                "- IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
+                "-- Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +
+                "-- System prezentuje zdefiniowane egzemplarze\n" +
+                "-- FOR EACH egzemplarz:\n" +
+                "--- Bibliotekarz wybiera opcję dodania egzemplarza\n" +
+                "--- System prosi o podanie danych egzemplarza\n" +
+                "--- Bibliotekarz podaje dane egzemplarza i zatwierdza.\n" +
+                "--- System informuje o poprawnym dodaniu egzemplarza i prezentuje zaktualizowaną listę egzemplarzy.\n" +
+                "- Bibliotekarz zatwierdza dodanie książki.\n" +
+                "- System informuje o poprawnym dodaniu książki.\n");
+        Scenario scenario = ScenarioFileLoader.loadScenario(new BufferedReader(strReader));
+        checkLoadedScenario(scenario, true);
     }
+
     @Test
-    void scenarioNoFirstDelim()
+    void scenarioNoFirstDelim() throws IOException
     {
-        checkLoadedScenario(ScenarioNoFirstDelim, false);
+        ScenarioFormat.delim = "-";
+        ScenarioFormat.bIgnoreExcessWhitechars = true;
+        ScenarioFormat.bStartWithDelim = false;
+
+        //StringReader stanowi klasę zastępczą (mock) dla FileReader, który powinien tutaj zostać wykorzystany
+        StringReader strReader = new StringReader("Tytuł: Dodane książki\n" +
+            "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +
+            "Aktor systemowy: System\n" +
+            "\n" +
+            " Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
+            " Wyświetla się formularz.\n" +
+            " Bibliotekarz podaje dane książki.\n" +
+            " IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
+            "- Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +
+            "- System prezentuje zdefiniowane egzemplarze\n" +
+            "- FOR EACH egzemplarz:\n" +
+            "-- Bibliotekarz wybiera opcję dodania egzemplarza\n" +
+            "-- System prosi o podanie danych egzemplarza\n" +
+            "-- Bibliotekarz podaje dane egzemplarza i zatwierdza.\n" +
+            "-- System informuje o poprawnym dodaniu egzemplarza i prezentuje zaktualizowaną listę egzemplarzy.\n" +
+            " Bibliotekarz zatwierdza dodanie książki.\n" +
+            " System informuje o poprawnym dodaniu książki.\n");
+        Scenario scenario = ScenarioFileLoader.loadScenario(new BufferedReader(strReader));
+        checkLoadedScenario(scenario, false);
     }
-    void checkLoadedScenario(Scenario scenario, boolean bRespectWhites) {
+
+    void checkLoadedScenario(Scenario scenario, boolean bRespectWhites)
+    {
         Assertions.assertNotNull(scenario);
         Assertions.assertEquals("Dodane książki", scenario.getName());
         Assertions.assertEquals("Bibliotekarz", scenario.getActor(0));
