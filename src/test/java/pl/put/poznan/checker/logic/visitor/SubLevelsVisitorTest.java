@@ -13,15 +13,15 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
+//todo: Można to przerzucić jakoś do ScenarioQualityCheckerText? W ogóle, czy to jest potrzebne, jeżeli ta klasa jest już testowana?
 class SubLevelsVisitorTest {
 
     private static Scenario scenario;
 
     @BeforeAll
     static void setSampleScenarios() {
-        List<Scenario> list = ScenarioFileLoaderTest.createSampleScenarios();
-        scenario = list.get(0);
+        //List<Scenario> list = ScenarioFileLoaderTest.createSampleScenarios();
+        //scenario = list.get(0);
     }
 
     void testLevel(int actLvl, int maxLvl, Step origin, Step output) {
