@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.put.poznan.checker.logic.ScenarioQualityChecker;
 import pl.put.poznan.checker.scenario.Scenario;
+import pl.put.poznan.checker.scenario.SubScenario;
+import pl.put.poznan.checker.scenario.Step;
 import pl.put.poznan.checker.scenario.ScenarioRepository;
 
 import java.util.HashMap;
@@ -232,7 +234,7 @@ public class ScenariosController
     {
         Scenario scenario = scenarioRepository.getScenario(id);
         if (scenario == null)
-        {;
+        {
             logger.warn("Zdalne API próbowało zwrócić nieistniejący Scenariusz o numerze {}", id.toString());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
