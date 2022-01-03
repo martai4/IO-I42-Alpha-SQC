@@ -185,7 +185,7 @@ public class ScenariosController
      * Używany URL: ip_hosta/keywordsNumber/{id}
      *
      * @param id <b>ID</b> <i>Scenariusza</i> do przetworzenia
-     * @return Odpowiedź <b>HTTP</b> z <b>JSON</b>'em o liczbie <i>Kroków</i> zaczynających się od <b>słów kluczowych</b> lub <b>kod błędu></b> 404, jeśli nie
+     * @return Odpowiedź <b>HTTP</b> z <b>JSON</b>'em o liczbie <i>Kroków</i> zaczynających się od <b>słów kluczowych</b> lub <b>kod błędu</b> 404, jeśli nie
      * znaleziono <i>Scenariusza</i> o wskazanym <b>ID</b>.
      */
     @GetMapping("/keywordsNumber/{id}")
@@ -223,7 +223,7 @@ public class ScenariosController
     }
 
     /**
-     * Funkcja pozwala sprawdzić, ile {@link Step Kroków} zawiera cały {@link Scenario Scenariusza} (łącznie z {@link ScenariSubScenario PodScenariuszami}).<br>
+     * Funkcja pozwala sprawdzić, ile {@link Step Kroków} zawiera cały {@link Scenario Scenariusza} (łącznie z {@link SubScenario PodScenariuszami}).<br>
      * żywany URL: ip_hosta/length/{id}
      *
      * @param id <b>ID</b> <i>Scenariusza</i> do sprawdzenia
