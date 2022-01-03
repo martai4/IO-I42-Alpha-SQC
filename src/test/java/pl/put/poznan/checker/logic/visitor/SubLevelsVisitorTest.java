@@ -2,18 +2,16 @@ package pl.put.poznan.checker.logic.visitor;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import pl.put.poznan.checker.debug.ScenarioFileLoaderTest;
 import pl.put.poznan.checker.scenario.Scenario;
 import pl.put.poznan.checker.scenario.Step;
 import pl.put.poznan.checker.scenario.SubScenario;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-//todo: Można to przerzucić jakoś do ScenarioQualityCheckerText? W ogóle, czy to jest potrzebne, jeżeli ta klasa jest już testowana?
+
 class SubLevelsVisitorTest {
 
     private static Scenario scenario;
