@@ -8,129 +8,161 @@ import pl.put.poznan.checker.scenario.Step;
 import pl.put.poznan.checker.scenario.SubScenario;
 
 /**
- * Klasa implementuje wzorzec projektowy "Wizytator" w celu spelnienia funkcjonalnosci reprezentowania scenariuszy
- * tylko do okreslonego poziomu zaglebienia.
+ * Implementuje wzorzec projektowy {@link Visitor Wizytator} w celu spełnienia funkcjonalności reprezentowania
+ * <i>Scenariuszy</i> tylko do określonego poziomu zagłębienia.
  *
  * @author I42-Alpha
- * @version 1.0
+ * @version 2.0
  */
-public class SubLevelsVisitor implements Visitor {
-
+public class SubLevelsVisitor implements Visitor
+{
     /**
-     * Maksymalny poziom zaglebienia podscenariuszy
+     * Maksymalny poziom zagłębienia <i>PodScenariuszy</i>.
      */
     private final int maxLevel;
+
     /**
-     * Aktualny poziom zaglebienia w czasie przetwarzania
+     * Aktualny poziom zagłębienia w czasie przetwarzania.
      */
     private int currentLevel;
+
     /**
-     * Nazwa dla nowego scenariusza
+     * Nazwa dla nowego {@link Scenario Scenariusza}.
      */
     private final String newName;
+
     /**
-     * Rodzic dla aktualnie przetwarzanego elementu
+     * {@link SubScenario PodScenariusz} będący rodzicem dla aktualnie przetwarzanego elementu.
      */
     private SubScenario currentParent;
+
     /**
-     * Wynikowy scenariusz, o poziomie zaglebienia okreslonym przez wywolanie
+     * Wynikowy {@link Scenario Scenariusz}, o poziomie zagłębienia <code>maxLevel</code>.
      */
     private Scenario result;
+
     /**
-     * Logger dokumentujacy prace klasy
+     * <i>Logger</i> dokumentujący pracę klasy.
      */
     private final Logger logger;
 
     /**
-     * Konstruktor okreslajacy podstawowe parametry.
+     * Konstruktor określający podstawowe parametry.
      *
-     * @param maxLevel Maksymalny poziom zaglebienia, jesli &lt; 1 rzuca wyjatek
-     * @param name     Nazwa dla nowej wersji scenariusza
-     * @throws Exception Wyjatek rzucany w przypadku podania nieprawidlowego poziomu maksymalnego
+     * @param maxLevel maksymalny poziom zagłębienia, jeśli &lt; 1: rzuca wyjątek
+     * @param name     nazwa dla nowej wersji {@link Scenario Scenariusza}
+     * @throws Exception wyjątek rzucany w przypadku podania nieprawidłowego poziomu maksymalnego zagłębienia
      */
-    public SubLevelsVisitor(int maxLevel, String name) throws Exception {
+    public SubLevelsVisitor(int maxLevel, String name) throws Exception
+    {
         logger = LoggerFactory.getLogger(SubLevelsVisitor.class);
         this.newName = name;
         this.currentLevel = 0;
         this.result = null;
-        if (maxLevel < 1) {
-            logger.debug("Nieprawidlowy parametr maxLevel: {}, nie powinien byc mniejszy niz 1", maxLevel);
+
+        if (maxLevel < 1)
+        {
+            logger.debug("Nieprawidłowy parametr maxLevel: {}, nie może być mniejszy niż 1", maxLevel);
             throw new Exception();
-        } else {
-            this.maxLevel = maxLevel;
         }
+        else this.maxLevel = maxLevel;
+
         logger.info("Utworzono obiekt klasy {}", this.getClass());
     }
 
     /**
-     * Implementacja interfejsu wzorca projektowego wizytator. Podany scenariusz zostaje zwrocony z nowa nazwa z
-     * poziomem zaglebienia podscenariuszy do poziomu okreslonego podczas wywolania konstruktora.
+     * Implementacja interfejsu wzorca projektowego {@link Visitor Wizytator}. Podany {@link Scenario Scenariusz} zostaje
+     * zwrócony z <b>nową nazwą</b> i <b>poziomem zagłębienia</b> {@link SubScenario PodScenariuszy} do poziomu <code>maxLevels</code>.
      *
-     * @param toConvert Scenariusz, ktory ma zostac przetworzony
-     * @return
+     * @param toConvert <i>Scenariusz</i>, który ma zostać przetworzony
+     * @return <i>Wizytator</i> (siebie).
      */
     @Override
-    public Visitor visit(Scenario toConvert) {
-        logger.info("Rozpoczeto przetwarzanie scenariusza {}", toConvert.getName());
+    public Visitor visit(Scenario toConvert)
+    {
+        if (toConvert == null)
+        {
+            logger.warn("Próbowano odwiedzić Scenariusz, który nie istnieje");
+            return this;
+        }
+
+        logger.debug("Rozpoczęto przetwarzanie Scenariusza {}", toConvert.getName());
         SubScenario mainScenario = new SubScenario();
-        this.result = new Scenario(newName, toConvert.getActors(), toConvert.getSystemActor(), mainScenario);
+        if (toConvert.getMain() != null)
+            result = new Scenario(newName, toConvert.getActors(), toConvert.getSystemActor(), mainScenario);
         currentParent = mainScenario;
-        toConvert.getMain().acceptVisitor(this);
-        logger.info("Zakonczono przetwarzanie scenariusza {}", toConvert.getName());
-        return this;
+
+        Visitor visitor = visit(toConvert.getMain());
+        logger.debug("Zakończono przetwarzanie Scenariusza {}", toConvert.getName());
+
+        return visitor;
     }
 
     /**
-     * Implementacja interfejsu wzorca projektowego wizytator
+     * Implementacja interfejsu wzorca projektowego {@link Visitor Wizytator}.
      *
-     * @param subScenario Aktualnie przetwarzany podscenariusz
-     * @return
+     * @param subScenario Aktualnie przetwarzany {@link SubScenario PodScenariusz}
+     * @return <i>Wizytator</i> (siebie).
      */
     @Override
-    public Visitor visit(SubScenario subScenario) {
+    public Visitor visit(SubScenario subScenario)
+    {
+        if (currentLevel == maxLevel)
+            return this;
+
+        if (subScenario == null)
+        {
+            logger.warn("Próbowano odwiedzić PodScenariusz, który nie istnieje");
+            return this;
+        }
+        ++currentLevel;
         SubScenario parentForThis = currentParent;
-        for (Step step : subScenario.getSteps()) {
-//            this.parents.add(subScenario);
-            step.acceptVisitor(this);
-            currentParent = parentForThis;
+        for (Step step : subScenario.getSteps())
+        {
+            visit(step);
+            currentParent = parentForThis;  //wraca z powrotem do przetwarzania oryginalnego PodScenariusza
         }
+
+        --currentLevel;
         return this;
     }
 
     /**
-     * Implementacja interfejsu wzorca projektowego wizytator
+     * Implementacja interfejsu wzorca projektowego {@link Visitor Wizytator}.
      *
-     * @param step Aktualnie przetwarzany punkt scenariusza
-     * @return
+     * @param step aktualnie przetwarzany {@link Step Krok}
+     * @return <i>Wizytator</i> (siebie).
      */
     @Override
-    public Visitor visit(Step step) {
-        this.currentLevel += 1;
-        if (this.currentLevel < this.maxLevel) {
-            if (step.getChild() == null) {
-                currentParent.getSteps().add(step);
-            } else {
-                SubScenario newStepSubscenario = new SubScenario();
-                SubScenario parentForThis = currentParent;
-                currentParent = newStepSubscenario;
-                step.getChild().acceptVisitor(this);
-                currentParent = parentForThis;
-                currentParent.getSteps().add(new Step(step.getText(), newStepSubscenario));
-            }
-        } else {
-            currentParent.getSteps().add(new Step(step.getText(), null));
+    public Visitor visit(Step step)
+    {
+        if (step.getChild() == null)
+            currentParent.addStep(step);
+
+        else if (currentLevel != maxLevel)
+        {
+            SubScenario newStepSubscenario = new SubScenario();
+            SubScenario parentForThis = currentParent;
+            currentParent = newStepSubscenario;
+
+            step.getChild().acceptVisitor(this);
+
+            currentParent = parentForThis;
+            currentParent.getSteps().add(new Step(step.getText(), newStepSubscenario));
         }
-        this.currentLevel -= 1;
+
         return this;
     }
 
     /**
-     * Funkcja zwraca wynikowy scenariusz
+     * Funkcja zwraca wynikowy {@link Scenario Scenariusz}.
      *
-     * @return Przetworzony scenariusz
+     * @return Przetworzony <i>Scenariusz</i>.
      */
-    public Scenario getConverted() {
-        logger.info("Zwrocenie scenariusza \"{}\"", this.newName);
-        return this.result;
+    public Scenario getConverted()
+    {
+        logger.debug("Zwrócenie Scenariusza \"{}\"", newName);
+        return result;
     }
+
 }
