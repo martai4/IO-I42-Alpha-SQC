@@ -36,14 +36,18 @@ public class DecisionsVisitor implements Visitor
     {
         //Pozbywamy się *białych znaków* na początku *tekstu*, jeżeli ich ignorowanie zostało ustawione
         if (ScenarioFormat.bIgnoreExcessWhitechars)
-            while (Character.isWhitespace(stepText.charAt(0)))
+            while (Character.isWhitespace(stepText.charAt(0))) {
                 stepText = stepText.substring(1);
+                logger.info("Usunięto biały znak z początku kroku.");
+            }
 
         //Sprawdza, czy *słowo kluczowe* znajduje się na początku *zmodyfikowanego tekstu*
         for (String key : ScenarioFormat.keys)
-            if (stepText.indexOf(key) == 0)
+            if (stepText.indexOf(key) == 0){
+                logger.info("Krok rozpoczyna się od słowa kluczowego {}",key);
                 return true;
-
+            }
+        logger.info("Krok nie rozpoczyna się od słowa kluczowego {}",stepText);
         return false;
     }
 
@@ -98,13 +102,17 @@ public class DecisionsVisitor implements Visitor
     public Visitor visit(Step step)
     {
         //Zwiększa licznik decyzji, jeżeli Krok zaczyna się od słowa kluczowego
-        if (isDecision(step.getText()))
+        if (isDecision(step.getText())) {
             ++decisionsCount;
+        }
 
         //Odwiedza PodScenariusz
         SubScenario subScenario = step.getChild();
-        if (subScenario != null)
+        if (subScenario != null) {
+            logger.info("Przechodzę do podscenariusza.");
             return visit(subScenario);
+        }
+        logger.info("Odwiedzono wszystkie podscenariusze dla kroku.");
 
         return this;
     }
