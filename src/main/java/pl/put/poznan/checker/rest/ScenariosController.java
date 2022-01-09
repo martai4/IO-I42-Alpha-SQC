@@ -7,14 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.put.poznan.checker.logic.ScenarioQualityChecker;
 import pl.put.poznan.checker.scenario.Scenario;
-import pl.put.poznan.checker.scenario.SubScenario;
-import pl.put.poznan.checker.scenario.Step;
 import pl.put.poznan.checker.scenario.ScenarioRepository;
+import pl.put.poznan.checker.scenario.Step;
+import pl.put.poznan.checker.scenario.SubScenario;
 
 import java.util.HashMap;
 import java.util.List;
 
-//todo: logging oraz testy mockiem
 /**
  * Obsługuje dostęp do wymaganych funkcjonalności porzez <b>REST API</b>. Na podstawie odpowiednich linków i ich
  * parametrów wywołuje metody odpowiadające danym funkcjonalnościom i zwraca uzyskane wyniki.
@@ -49,7 +48,7 @@ public class ScenariosController
     {
         if (scenario == null)
         {
-            //logger.error
+            logger.warn("Proba dodania pustego scenariusza przez API");
             return;
         }
       
@@ -75,8 +74,8 @@ public class ScenariosController
         }
         else
         {
-            logger.info("Zgdalne API zwraca Scenariusz o numerze {} i nazwie \"{}\"",
-                        id.toString(), scenario.getName());
+            logger.info("Zdalne API zwraca Scenariusz o numerze {} i nazwie \"{}\"",
+                    id.toString(), scenario.getName());
             return ResponseEntity.ok(scenario);
         }
     }
@@ -90,6 +89,7 @@ public class ScenariosController
     @GetMapping("/listAll")
     public ResponseEntity<HashMap<Integer, String>> listAllScenarios()
     {
+        logger.debug("Rzadanie wyswietlenia listy scenariuszy dla zdalnego api");
         /*HashMap<Integer, String> scenarios = new HashMap<>();
         for (var key : scenarioRepository.getScenarios().keySet()) {
             scenarios.put(key, scenarioRepository.getScenario(key).getName());
@@ -98,7 +98,7 @@ public class ScenariosController
         int i = 0;
         for (var scenario : scenarioRepository.getScenarios())
             scenarios.put(i++, scenario.getName());
-
+        logger.info(String.format("Udostepniono liste %d scenariuszy poprzez API", scenarios.size()));
         return ResponseEntity.ok(scenarios);
     }
 
@@ -114,12 +114,14 @@ public class ScenariosController
     @GetMapping("/byName/{name}")
     public ResponseEntity<Scenario> getScenarioByName(@PathVariable("name") String name)
     {
+        logger.debug("Przychodzace rzadanie scenariusza wg nazwy");
         Scenario scenario = scenarioRepository.getScenarioByName(name);
         if (scenario == null)
         {
-            logger.warn("Zdalne API próbowało zwrócić nieistniejący Scenariusz o nazwie \"{}\"", name);
+            logger.warn("Zdalne API rzadalo niestniejacego scenariuza o nazwie \"{}\"", name);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        logger.info(String.format("Udostepniono scenariusz o nazwie \"%s\" przez API", name));
         return ResponseEntity.ok(scenario);
     }
 
@@ -134,13 +136,14 @@ public class ScenariosController
     @GetMapping("/text/{id}")
     public ResponseEntity<String> getTextifiedScenario(@PathVariable("id") Integer id)
     {
+        logger.debug("Przychodzace rzadanie przetworzenia do tekstu");
         var scenario = scenarioRepository.getScenario(id);
         if (scenario == null)
         {
-            logger.warn("Zdalne API próbowało zwrócić nieistniejący Scenariusz o numerze {}", id.toString());
+            logger.warn("Zdalne rzadanie przetworzenia niestniejacego scenariusza o numerze {}", id.toString());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
+        logger.info(String.format("Udostepniono wynik przetwarzania do tektu scenariusza o ID: %d", id));
         return ResponseEntity.ok(ScenarioQualityChecker.getScenarioTextified(scenario));
     }
 
@@ -158,25 +161,24 @@ public class ScenariosController
     @GetMapping("/toLevel/{id} {lvl} {name}")
     public ResponseEntity<Scenario> getScenarioToLevel(@PathVariable("id") Integer id, @PathVariable("lvl") int level, @PathVariable("name") String name)
     {
+        logger.debug("Przychodzace rzadanie przetworzenia scenariusza do okreslonego poziomu");
         Scenario toConvert = scenarioRepository.getScenario(id);
         if (toConvert == null)
         {
-            logger.warn("Zdalne API próbowało zwrócić nieistniejący Scenariusz o numerze {}", id.toString());
+            logger.warn("Zdalne rzadanie przetworzenia niestniejacego scenariusza o numerze {}", id.toString());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         Scenario converted;
-        try
-        {
+        try {
             converted = ScenarioQualityChecker.getScenarioUpToLevel(toConvert, level);
-        }
-        catch (Exception ex)
-        {
-            logger.warn("Zdalne API próbowało zwrócić nieistniejący Scenariusz o numerze {}", id.toString());
+        } catch (Exception ex) {
+            logger.warn("Zdalne rzadanie przetworzenia niestniejacego scenariusza o numerze {}", id.toString());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        scenarioRepository.addScenario(converted);//to na pewno tak ma być? todo:check
+        scenarioRepository.addScenario(converted);
+        logger.info(String.format("Przetworzono scenariusz o ID: %d do poziomu %d i zapisano pod nazwa \"%s\"", id,
+                level, name));
         return ResponseEntity.ok(converted);
     }
 
@@ -189,15 +191,15 @@ public class ScenariosController
      * znaleziono <i>Scenariusza</i> o wskazanym <b>ID</b>.
      */
     @GetMapping("/keywordsNumber/{id}")
-    public ResponseEntity<Integer> getScenarioKeywordsNumber(@PathVariable("id") Integer id)
-    {
+    public ResponseEntity<Integer> getScenarioKeywordsNumber(@PathVariable("id") Integer id) {
+        logger.debug("Przychodzace rzadanie zliczenia slow kluczowych");
         Scenario scenario = scenarioRepository.getScenario(id);
-        if (scenario == null)
-        {
-            logger.warn("Zdalne API próbowało zwrócić nieistniejący Scenariusz o numerze {}", id.toString());
+        if (scenario == null) {
+            logger.warn("Zdalne rzadanie przetworzenia niestniejacego scenariusza o numerze {}", id.toString());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
+        logger.info(String.format("Zwrocono %d slow kluczowych w scenariuszu o ID: %d",
+                ScenarioQualityChecker.getDecisionCount(scenario), id));
         return ResponseEntity.ok(ScenarioQualityChecker.getDecisionCount(scenario));
     }
 
@@ -212,13 +214,14 @@ public class ScenariosController
     @GetMapping("/noActorsStep/{id}")
     public ResponseEntity<List<String>> getScenarioStepsWithoutActors(@PathVariable("id") Integer id)
     {
+        logger.debug("Przychodzace rzadanie sprawdzenia krokow bez aktorow");
         Scenario scenario = scenarioRepository.getScenario(id);
         if (scenario == null)
         {
-            logger.warn("Zdalne API próbowało zwrócić nieistniejący Scenariusz o numerze {}", id.toString());
+            logger.warn("Zdalne rzadanie przetworzenia niestniejacego scenariusza o numerze {}", id.toString());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
+        logger.info(String.format("Przetworzono kroki bez aktorow scenariusza o ID: %d", id));
         return ResponseEntity.ok(ScenarioQualityChecker.getActorErrors(scenario));
     }
 
@@ -232,13 +235,14 @@ public class ScenariosController
     @GetMapping("/length/{id}")
     public ResponseEntity<Integer> getScenarioLength(@PathVariable("id") Integer id)
     {
+        logger.debug("Przychodzace rzadanie sprawdzenia dlugosci scenariusza");
         Scenario scenario = scenarioRepository.getScenario(id);
         if (scenario == null)
         {
-            logger.warn("Zdalne API próbowało zwrócić nieistniejący Scenariusz o numerze {}", id.toString());
+            logger.warn("Zdalne rzadanie przetworzenia niestniejacego scenariusza o numerze {}", id.toString());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
+        logger.info(String.format("Zwrocono dlugosc scenariusza o ID: %d", id));
         return ResponseEntity.ok(ScenarioQualityChecker.getScenarioSize(scenario));
     }
 }
