@@ -208,7 +208,8 @@ public class ScenariosController
      * Używany URL: ip_hosta/noActorsStep/{id}
      *
      * @param id <b>ID</b> <i>Scenariusza</i> do przetworzenia
-     * @return Odpowiedz <b>HTTP</b> z <b>JSON</b>'em, który zawiera listę <i>Krokow</i>, nie zaczynających się od <b>aktorów</b> lub <b>aktora systemowego</b> albo 
+     * @return Odpowiedz <b>HTTP</b> z <b>JSON</b>'em, który zawiera listę <i>Krokow</i>, nie zaczynających się od <b>aktorów</b> lub <b>aktora systemowego</b>.
+     * W przypadku rozpoczęcia od słowa kluczowego, sprawdza się obecność po wystąpieniu tego słowa. Zwracany jest
      * <b>kod błędu</b> 404, jeśli nie znaleziono <i>Scenariusza</i> o wskazanym <b>ID</b>`.
      */
     @GetMapping("/noActorsStep/{id}")

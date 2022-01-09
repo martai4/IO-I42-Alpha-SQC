@@ -41,36 +41,52 @@ public class ActorVisitor implements Visitor
      */
     private boolean isActor(String stepText)
     {
-        if (stepText.isBlank())
+        if (stepText.isBlank()) {
+            logger.info("Krok  jest pusty");
             return true;
+        }
 
         String stepTextOriginal = stepText;
+        if (stepTextOriginal == null){
+            logger.warn("Krok nie zawiera tekstu");
+        }
         //Pozbywamy się *białych znaków* na początku *tekstu*, jeżeli ich ignorowanie zostało ustawione
-        if (ScenarioFormat.bIgnoreExcessWhitechars)
-            while (Character.isWhitespace(stepText.charAt(0)))
+        if (ScenarioFormat.bIgnoreExcessWhitechars) {
+            while (Character.isWhitespace(stepText.charAt(0))) {
                 stepText = stepText.substring(1);
-
+                logger.info("Usunieto biały znak z początku kroku");
+            }
+        }
         //Usuwamy *słowo kluczowe*
         for (String key : ScenarioFormat.keys)
             if (stepText.indexOf(key) == 0)
             {
                 stepText = stepText.substring(key.length());
+                logger.info("Usunieto slowo kluczowe z poczatku kroku {}",key);
                 break;
             }
 
         //Pozbywamy się nadmiaru *białych znaków* po *słowie kluczowym*, jeżeli ich ignorowanie zostało ustawione
-        if (ScenarioFormat.bIgnoreExcessWhitechars)
-            while (Character.isWhitespace(stepText.charAt(0)))
+        if (ScenarioFormat.bIgnoreExcessWhitechars) {
+            while (Character.isWhitespace(stepText.charAt(0))) {
                 stepText = stepText.substring(1);
+                logger.info("Usunieto biały znak z nowego początku kroku");
+            }
+        }
 
         //Jeżeli nasz *zmodyfikowany tekst* zaczyna się od *aktora*, to zwracamy [true]
         for (String actor : actors)
-            if (stepText.indexOf(actor) == 0)
+            if (stepText.indexOf(actor) == 0) {
+                logger.info("Krok zaczyna się od aktora");
                 return true;
+            }
 
         //Zwracamy [true], jeżeli *zmodyfikowany tekst* zaczyna się od *aktora systemowego* lub [false] w przeciwnym wypadku
         boolean ret = stepText.indexOf(sysActor) == 0;
-        if (!ret) logger.warn("Krok \"{}\" zawiera błąd. Brak lub niepoprawny aktor na początku kroku", stepTextOriginal);
+        if (!ret) {logger.warn("Krok \"{}\" zawiera błąd. Brak lub niepoprawny aktor na początku kroku", stepTextOriginal);}
+        else{
+            logger.info("Krok rozpoczyna się od aktora systemowego");
+        }
         return ret;
     }
 
