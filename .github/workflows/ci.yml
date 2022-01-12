@@ -12,12 +12,12 @@ jobs:
           distribution: 'adopt'
           cache: maven
       - name: Validate, build and run tests
-        run: mvn package
+        run: mvn --batch-mode --update-snapshots verify
       - name: Copy .jar 
-        run: mkdir build && cp target/*.jar build
+        run: mkdir build && mv target/ScenarioQualityChecker-2.0-spring-boot.jar build/ScenarioQualityCheckerREST.jar && mv target/ScenarioQualityChecker-2.0.jar build/ScenarioQualityCheckerGUI.jar
       - uses: actions/upload-artifact@v2
         with:
-          name: ScenarioQualityCheckerREST.zip
+          name: ScenarioQualityChecker
           path: build
       - name: Javadocs
         run: mvn javadoc:javadoc
