@@ -12,7 +12,7 @@ jobs:
           distribution: 'adopt'
           cache: maven
       - name: Validate, build and run tests
-        run: mvn --batch-mode --update-snapshots verify
+        run: mvn package
       - name: Copy .jar 
         run: mkdir build && cp target/*.jar build
       - uses: actions/upload-artifact@v2
