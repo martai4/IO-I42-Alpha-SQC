@@ -69,7 +69,7 @@ public class ScenarioTextifier implements Visitor
         boolean firstActor = true;
         for (String actor: scenario.getActors())
         {
-            if (!firstActor) this.text = this.text.concat(", ");
+            if (!firstActor) this.text = this.text.concat(" ");
             else this.text = this.text.concat("Aktorzy: ");
             firstActor = false;
 
@@ -136,7 +136,7 @@ public class ScenarioTextifier implements Visitor
         String name = step.getText();
         if(name != null)
         {
-            this.text = this.text.concat(this.stepPrefix + step.getText() + "\n");
+            this.text = this.text.concat(this.stepPrefix + " " + step.getText() + "\n");
             logger.debug("Odwiedzono i dodano Krok: {}", name);
         }
         else logger.debug("Odwiedzony Krok jest pusty");

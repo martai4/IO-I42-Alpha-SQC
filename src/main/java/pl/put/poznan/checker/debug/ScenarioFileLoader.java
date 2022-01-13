@@ -7,6 +7,8 @@ import pl.put.poznan.checker.scenario.Step;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -32,7 +34,7 @@ public class ScenarioFileLoader
     private enum ReadMode {NONE, TITLE, ACTOR, SYSTEM_ACTOR}
 
     /**
-     * Tworzy {@link Scenario Scenariusz}c na podstawie <b>pliku tekstowego</b>.
+     * Tworzy {@link Scenario Scenariusz} na podstawie <b>pliku tekstowego</b>.
      * @param stream strumień, z którego zostanie utworzony <i>Scenariusz</i>
      * @return Wypełniony obiekt typu <i>Scenario</i>.
      * */
@@ -52,8 +54,12 @@ public class ScenarioFileLoader
             if (buf == null)
             {
                 logger.error("Przedwczesny koniec pliku, udało się przetworzyć {} słów kluczowych", informacje.toString());
+
                 return null;
             }
+
+            if (buf.indexOf("\uFEFF") == 0)
+                buf = buf.substring(1);
             if (buf.isBlank())
                 continue;
 
@@ -181,7 +187,7 @@ public class ScenarioFileLoader
                 continue;
 
             //Sprawdzamy poziom zagłębienia Kroku
-            //Dopóki pierwszy znak jest równy [delim], ucinamy go i zwiększamy poziom zagłebienia
+            //Dopóki pierwszy znak jest równy [delim], ucinamy go i zwiększamy poziom zagłębienia
             String stepText = step;
             Integer level = 0;
 
@@ -189,10 +195,33 @@ public class ScenarioFileLoader
             while (Character.isWhitespace(step.charAt(0)))
                 step = step.substring(1);
 
-            for (;stepText.indexOf(ScenarioFormat.delim) == 0; ++level)
-                stepText = stepText.substring(1);
+            if (ScenarioFormat.bEnumerate)
+            {
+                if (stepText.contains(".")) {
+                    boolean bAllNumerical = true;
+                    String num = stepText.substring(0, stepText.indexOf("."));
+                    while (bAllNumerical) {
+                        for (int i = 0; i != num.length(); ++i)
+                            if (!Character.isDigit(num.charAt(i))) {
+                                bAllNumerical = false;
+                                break;
+                            }
 
-            if (step.isBlank())
+                        if (bAllNumerical) {
+                            stepText = stepText.substring(stepText.indexOf(".") + 1);
+                            ++level;
+                            if (!stepText.contains("."))
+                                break;
+                            num = stepText.substring(0, stepText.indexOf("."));
+                        }
+                    }
+                }
+            }
+            else
+                for (;stepText.indexOf(ScenarioFormat.delim) == 0; ++level)
+                    stepText = stepText.substring(1);
+
+            if (stepText.isBlank())
             {
                 logger.warn("Pusty Krok");
                 continue;
@@ -217,10 +246,16 @@ public class ScenarioFileLoader
                 {
                     logger.error("Niepoprawnie zapisany Scenariusz: niekonsystentne " +
                             "poziomy zagłębień. Krok powodujący błąd: {}", step);
-                    return null;
+                    throw new IOException("badDelim");
                 }
 
                 //Nowy PodScenariusz trzeba powiązać z ostatnim Krokiem obecnego PodScenariusza
+                if (subScenario.getLength() == 0)
+                {
+                    logger.error("Niepoprawnie zapisany Scenariusz: pierwszy " +
+                            "krok posiada niepoprawny poziom zagłębień. Krok powodujący błąd: {}", step);
+                    throw new IOException("badDelim");
+                }
                 SubScenario nextSubScenario = subScenario.getStep(subScenario.getLength() - 1).getChild();
                 if (nextSubScenario == null)
                 {

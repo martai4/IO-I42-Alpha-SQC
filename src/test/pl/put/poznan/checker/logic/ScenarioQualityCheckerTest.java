@@ -147,22 +147,22 @@ class ScenarioQualityCheckerTest
     void scenarioSample_getScenarioTextified()
     {
         assertEquals("Tytuł: Dodane książki\n" +
-                "Aktorzy: Bibliotekarz, Inny, KtośTam, TamKtoś\n" +
+                "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +
                 "Aktor systemowy: System\n" +
                 "\n" +
-                "1.Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
-                "2.Wyświetla się formularz.\n" +
-                "3.Bibliotekarz podaje dane książki.\n" +
-                "4.IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
-                "4.1.Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +
-                "4.2.System prezentuje zdefiniowane egzemplarze\n" +
-                "4.3.FOR EACH egzemplarz:\n" +
-                "4.3.1.Bibliotekarz wybiera opcję dodania egzemplarza\n" +
-                "4.3.2.System prosi o podanie danych egzemplarza\n" +
-                "4.3.3.Bibliotekarz podaje dane egzemplarza i zatwierdza.\n" +
-                "4.3.4.System informuje o poprawnym dodaniu egzemplarza i prezentuje zaktualizowaną listę egzemplarzy.\n" +
-                "5.Bibliotekarz zatwierdza dodanie książki.\n" +
-                "6.System informuje o poprawnym dodaniu książki.\n", ScenarioQualityChecker.getScenarioTextified(mockScenario));
+                "1. Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
+                "2. Wyświetla się formularz.\n" +
+                "3. Bibliotekarz podaje dane książki.\n" +
+                "4. IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
+                "4.1. Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +
+                "4.2. System prezentuje zdefiniowane egzemplarze\n" +
+                "4.3. FOR EACH egzemplarz:\n" +
+                "4.3.1. Bibliotekarz wybiera opcję dodania egzemplarza\n" +
+                "4.3.2. System prosi o podanie danych egzemplarza\n" +
+                "4.3.3. Bibliotekarz podaje dane egzemplarza i zatwierdza.\n" +
+                "4.3.4. System informuje o poprawnym dodaniu egzemplarza i prezentuje zaktualizowaną listę egzemplarzy.\n" +
+                "5. Bibliotekarz zatwierdza dodanie książki.\n" +
+                "6. System informuje o poprawnym dodaniu książki.\n", ScenarioQualityChecker.getScenarioTextified(mockScenario));
     }
 
     @Test
@@ -175,14 +175,14 @@ class ScenarioQualityCheckerTest
     void scenarioSample_getScenarioUpToLevel1() throws Exception
     {
         assertEquals("Tytuł: Dodane książki\n" +
-                        "Aktorzy: Bibliotekarz, Inny, KtośTam, TamKtoś\n" +
+                        "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +
                         "Aktor systemowy: System\n" +
                         "\n" +
-                        "1.Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
-                        "2.Wyświetla się formularz.\n" +
-                        "3.Bibliotekarz podaje dane książki.\n" +
-                        "4.Bibliotekarz zatwierdza dodanie książki.\n" +
-                        "5.System informuje o poprawnym dodaniu książki.\n",
+                        "1. Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
+                        "2. Wyświetla się formularz.\n" +
+                        "3. Bibliotekarz podaje dane książki.\n" +
+                        "4. Bibliotekarz zatwierdza dodanie książki.\n" +
+                        "5. System informuje o poprawnym dodaniu książki.\n",
                 ScenarioQualityChecker.getScenarioTextified(
                         ScenarioQualityChecker.getScenarioUpToLevel(mockScenario, 1)));
     }
@@ -191,17 +191,17 @@ class ScenarioQualityCheckerTest
     void scenarioSample_getScenarioUpToLevel2() throws Exception
     {
         assertEquals("Tytuł: Dodane książki\n" +
-                        "Aktorzy: Bibliotekarz, Inny, KtośTam, TamKtoś\n" +
+                        "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +
                         "Aktor systemowy: System\n" +
                         "\n" +
-                        "1.Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
-                        "2.Wyświetla się formularz.\n" +
-                        "3.Bibliotekarz podaje dane książki.\n" +
-                        "4.IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
-                        "4.1.Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +
-                        "4.2.System prezentuje zdefiniowane egzemplarze\n" +
-                        "5.Bibliotekarz zatwierdza dodanie książki.\n" +
-                        "6.System informuje o poprawnym dodaniu książki.\n",
+                        "1. Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
+                        "2. Wyświetla się formularz.\n" +
+                        "3. Bibliotekarz podaje dane książki.\n" +
+                        "4. IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
+                        "4.1. Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +
+                        "4.2. System prezentuje zdefiniowane egzemplarze\n" +
+                        "5. Bibliotekarz zatwierdza dodanie książki.\n" +
+                        "6. System informuje o poprawnym dodaniu książki.\n",
                 ScenarioQualityChecker.getScenarioTextified(
                         ScenarioQualityChecker.getScenarioUpToLevel(mockScenario, 2)));
     }

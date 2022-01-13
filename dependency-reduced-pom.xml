@@ -34,7 +34,7 @@
                 </transformer>
                 <transformer />
                 <transformer>
-                  <mainClass>pl.put.poznan.checker.app.JARWorkaround</mainClass>
+                  <mainClass>pl.put.poznan.checker.app.Workaround</mainClass>
                 </transformer>
               </transformers>
             </configuration>
@@ -191,13 +191,15 @@
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-graphics</artifactId>
-      <version>17</version>
+      <version>17.0.1</version>
+      <classifier>win</classifier>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
-      <version>17</version>
+      <version>17.0.1</version>
+      <classifier>win</classifier>
       <scope>provided</scope>
     </dependency>
   </dependencies>

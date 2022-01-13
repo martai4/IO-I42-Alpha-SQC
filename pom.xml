@@ -69,13 +69,15 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
-            <version>17</version>
+            <version>17.0.1</version>
+            <classifier>win</classifier>
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>17</version>
+            <version>17.0.1</version>
+            <classifier>win</classifier>
         </dependency>
     </dependencies>
 
@@ -109,7 +111,7 @@
                                         implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>pl.put.poznan.checker.app.JARWorkaround</mainClass>
+                                    <mainClass>pl.put.poznan.checker.app.Workaround</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
