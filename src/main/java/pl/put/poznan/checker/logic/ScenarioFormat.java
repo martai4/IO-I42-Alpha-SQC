@@ -46,6 +46,11 @@ public class ScenarioFormat
     public static Boolean bStartWithDelim = true;
 
     /**
+     * Zamiast zczytywania po <b>{@link #delim znaku speratora poziomów zagłębień}</b>, zczytujemy przy pomocy numeracji.
+     */
+    public static Boolean bEnumerate = true;
+
+    /**
      * Znak używany do wyznaczenia <b>poziomu zagłębień</b>, ale tylko wtedy, gdy <b>numeracja</b> nie występuje.
      */
     public static String delim = "-";

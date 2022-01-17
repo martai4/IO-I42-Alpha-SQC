@@ -1,6 +1,5 @@
 package pl.put.poznan.checker.app;
 
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -14,14 +13,18 @@ import javafx.fxml.FXMLLoader;
  * @author I42-Alpha
  * @version 2.0
  */
-public class ScenarioQualityCheckerGUIApplication extends Application {
+public class ScenarioQualityCheckerGUIApplication extends Application
+{
     private static final Logger logger = LoggerFactory.getLogger(ScenarioQualityCheckerGUIApplication.class);
 
     /**
      * Domyślny konstruktor <code>ScenarioQualityCheckerGUIApplication</code>.
      * */
     public ScenarioQualityCheckerGUIApplication() {}
-    @Override        /*
+
+    public void start(Stage stage) throws Exception
+    {
+        /*
          tryScenarioFormat.
         {
             scenarioFile = new FileReader(file);
@@ -34,15 +37,19 @@ public class ScenarioQualityCheckerGUIApplication extends Application {
             throw e;
         }
          */
-    public void start(Stage stage) throws Exception
-    {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("app/ScenarioQualityCheckerGUIApplication.fxml"));
-        Scene scene = new Scene(root);
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("pl/put/poznan/checker/app/ScenarioQualityCheckerGUIApplication.fxml"));
+        Scene scene = new Scene(loader.load());
+        ScenarioQualityCheckerGUIApplicationController controller = loader.getController();
+        controller.setStageAndSetupListeners(stage);
+
         logger.info("Program wystartował");
-        stage.setTitle("My First JavaFX App");
+        stage.setTitle("Scenario Quality Checker");
         stage.setScene(scene);
+        stage.setMinHeight(300.0);
+        stage.setMinWidth(400.0);
         stage.show();
     }
+
     /**
      * Główna metoda uruchamiana przy starcie programu.
      * @param args argumenty wiersza poleceń

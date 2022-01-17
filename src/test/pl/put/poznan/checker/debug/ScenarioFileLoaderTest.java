@@ -2,7 +2,6 @@ package pl.put.poznan.checker.debug;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.put.poznan.checker.logic.ScenarioFormat;
-import pl.put.poznan.checker.logic.ScenarioQualityChecker;
 import pl.put.poznan.checker.scenario.Scenario;
 import pl.put.poznan.checker.scenario.Step;
 import pl.put.poznan.checker.scenario.SubScenario;
@@ -15,6 +14,7 @@ public class ScenarioFileLoaderTest
     @Test
     void scenarioProper() throws IOException
     {
+        ScenarioFormat.bEnumerate = false;
         ScenarioFormat.delim = "-";
         ScenarioFormat.bIgnoreExcessWhitechars = true;
         ScenarioFormat.bStartWithDelim = true;
@@ -42,8 +42,39 @@ public class ScenarioFileLoaderTest
     }
 
     @Test
+    void scenarioProperEnumerate() throws IOException
+    {
+        ScenarioFormat.bEnumerate = true;
+        ScenarioFormat.delim = "-";
+        ScenarioFormat.bIgnoreExcessWhitechars = true;
+        ScenarioFormat.bStartWithDelim = true;
+
+        //StringReader stanowi klasę zastępczą (mock) dla FileReader, który powinien tutaj zostać wykorzystany
+        StringReader strReader = new StringReader("Tytuł: Dodane książki\n" +
+                "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +
+                "Aktor systemowy: System\n" +
+                "\n" +
+                "1. Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
+                "2. Wyświetla się formularz.\n" +
+                "3. Bibliotekarz podaje dane książki.\n" +
+                "4. IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
+                "4.1. Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +
+                "4.2. System prezentuje zdefiniowane egzemplarze\n" +
+                "4.3. FOR EACH egzemplarz:\n" +
+                "4.3.1. Bibliotekarz wybiera opcję dodania egzemplarza\n" +
+                "4.3.2. System prosi o podanie danych egzemplarza\n" +
+                "4.3.3. Bibliotekarz podaje dane egzemplarza i zatwierdza.\n" +
+                "4.3.4. System informuje o poprawnym dodaniu egzemplarza i prezentuje zaktualizowaną listę egzemplarzy.\n" +
+                "5. Bibliotekarz zatwierdza dodanie książki.\n" +
+                "6. System informuje o poprawnym dodaniu książki.\n");
+        Scenario scenario = ScenarioFileLoader.loadScenario(new BufferedReader(strReader));
+        checkLoadedScenario(scenario, false);
+    }
+
+    @Test
     void scenarioRandomWhites() throws IOException
     {
+        ScenarioFormat.bEnumerate = false;
         ScenarioFormat.delim = "-";
         ScenarioFormat.bIgnoreExcessWhitechars = true;
         ScenarioFormat.bStartWithDelim = true;
@@ -73,6 +104,7 @@ public class ScenarioFileLoaderTest
     @Test
     void scenarioNoWhites() throws IOException
     {
+        ScenarioFormat.bEnumerate = false;
         ScenarioFormat.delim = "-";
         ScenarioFormat.bIgnoreExcessWhitechars = false;
         ScenarioFormat.bStartWithDelim = true;
@@ -102,6 +134,7 @@ public class ScenarioFileLoaderTest
     @Test
     void scenarioNoFirstDelim() throws IOException
     {
+        ScenarioFormat.bEnumerate = false;
         ScenarioFormat.delim = "-";
         ScenarioFormat.bIgnoreExcessWhitechars = true;
         ScenarioFormat.bStartWithDelim = false;

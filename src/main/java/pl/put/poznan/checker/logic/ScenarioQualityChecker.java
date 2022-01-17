@@ -3,6 +3,7 @@ import pl.put.poznan.checker.logic.visitor.*;
 import pl.put.poznan.checker.scenario.Scenario;
 import pl.put.poznan.checker.scenario.Step;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,6 +27,8 @@ public class    ScenarioQualityChecker
      */
     public static List<String> getActorErrors(Scenario scenario)
     {
+        if (scenario == null)
+            return Collections.emptyList();
         ActorVisitor visitor = new ActorVisitor(scenario.getActors(), scenario.getSystemActor());
         scenario.acceptVisitor(visitor);
         return visitor.getErrors();
@@ -39,6 +42,8 @@ public class    ScenarioQualityChecker
      */
     public static int getDecisionCount(Scenario scenario)
     {
+        if (scenario == null)
+            return 0;
         DecisionsVisitor visitor = new DecisionsVisitor();
         scenario.acceptVisitor(visitor);
         return visitor.getDecisionsCount();
@@ -64,6 +69,8 @@ public class    ScenarioQualityChecker
      */
     public static String getScenarioTextified(Scenario scenario)
     {
+        if (scenario == null)
+            return "";
         ScenarioTextifier visitor = new ScenarioTextifier();
         scenario.acceptVisitor(visitor);
         return visitor.getText();
@@ -77,6 +84,8 @@ public class    ScenarioQualityChecker
      */
     public static Scenario getScenarioUpToLevel(Scenario scenario, int level) throws Exception
     {
+        if (scenario == null)
+            return null;
         SubLevelsVisitor visitor = new SubLevelsVisitor(level, scenario.getName());
         scenario.acceptVisitor(visitor);
         return visitor.getConverted();

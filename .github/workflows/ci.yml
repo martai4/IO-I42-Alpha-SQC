@@ -14,10 +14,10 @@ jobs:
       - name: Validate, build and run tests
         run: mvn --batch-mode --update-snapshots verify
       - name: Copy .jar 
-        run: mkdir build && mv target/ScenarioQualityChecker-2.0-spring-boot.jar build/ScenarioQualityCheckerREST.jar && mv target/ScenarioQualityChecker-2.0-shaded.jar build/ScenarioQualityCheckerGUI.jar
+        run: mkdir build && mv target/ScenarioQualityChecker-2.0-spring-boot.jar build/ScenarioQualityCheckerREST.jar && mv target/ScenarioQualityChecker-2.0.jar build/ScenarioQualityCheckerGUI.jar && cp src/main/resources/start.bat build
       - uses: actions/upload-artifact@v2
         with:
-          name: ScenarioQualityCheckerREST.jar
+          name: ScenarioQualityChecker
           path: build
       - name: Javadocs
         run: mvn javadoc:javadoc
