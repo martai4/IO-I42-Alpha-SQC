@@ -14,7 +14,13 @@ import pl.put.poznan.checker.scenario.Step;
  */
 public class LengthVisitor implements Visitor
 {
+    /**
+     * <i>Logger</i> dokumentujący pracę klasy.
+     */
     private static final Logger logger = LoggerFactory.getLogger(LengthVisitor.class);
+    /**
+     * @see LengthVisitor#getSize()
+     */
     private int size = 0;
 
     /**
