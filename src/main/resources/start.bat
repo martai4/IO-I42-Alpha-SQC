@@ -1,2 +1,2 @@
-java -jar ScenarioQualityChecker-2.0.jar
+java -jar ScenarioQualityCheckerGUI.jar
 pause

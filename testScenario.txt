@@ -1,5 +1,5 @@
-Tytuł: Dodane książki
-Aktorzy: Bibliotekarz, Inny, KtośTam, TamKtoś
+﻿Tytuł: Dodane książki
+Aktorzy: Bibliotekarz Inny KtośTam TamKtoś
 Aktor systemowy: System
 
 1.Bibliotekarz wybiera opcje dodania nowej pozycji książkowej
