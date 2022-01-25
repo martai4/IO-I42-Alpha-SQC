@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,8 +34,8 @@ class ScenarioQualityCheckerTest
         return steps;
     }
 
-    @BeforeAll
-    static void createMockScenario()
+    @BeforeEach
+    void createMockScenario()
     {
         when(mockScenario.getName()).thenReturn("Dodane książki");
         when(mockScenario.getActors()).thenReturn(Arrays.asList("Bibliotekarz", "Inny", "KtośTam", "TamKtoś"));
