@@ -166,6 +166,81 @@ class ScenarioQualityCheckerTest
     }
 
     @Test
+    void scenarioSample_getScenarioTextifiedNoTitle()
+    {
+        when(mockScenario.getName()).thenReturn(null);
+        assertEquals(
+                "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +
+                "Aktor systemowy: System\n" +
+                "\n" +
+                "1. Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
+                "2. Wyświetla się formularz.\n" +
+                "3. Bibliotekarz podaje dane książki.\n" +
+                "4. IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
+                "4.1. Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +
+                "4.2. System prezentuje zdefiniowane egzemplarze\n" +
+                "4.3. FOR EACH egzemplarz:\n" +
+                "4.3.1. Bibliotekarz wybiera opcję dodania egzemplarza\n" +
+                "4.3.2. System prosi o podanie danych egzemplarza\n" +
+                "4.3.3. Bibliotekarz podaje dane egzemplarza i zatwierdza.\n" +
+                "4.3.4. System informuje o poprawnym dodaniu egzemplarza i prezentuje zaktualizowaną listę egzemplarzy.\n" +
+                "5. Bibliotekarz zatwierdza dodanie książki.\n" +
+                "6. System informuje o poprawnym dodaniu książki.\n", ScenarioQualityChecker.getScenarioTextified(mockScenario));
+    }
+
+    @Test
+    void scenarioSample_getScenarioTextifiedNoActors() {
+        when(mockScenario.getActors()).thenReturn(new ArrayList<>());
+        assertEquals("Tytuł: Dodane książki\n" +
+                "\n" +
+                "Aktor systemowy: System\n" +
+                "\n" +
+                "1. Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
+                "2. Wyświetla się formularz.\n" +
+                "3. Bibliotekarz podaje dane książki.\n" +
+                "4. IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
+                "4.1. Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +
+                "4.2. System prezentuje zdefiniowane egzemplarze\n" +
+                "4.3. FOR EACH egzemplarz:\n" +
+                "4.3.1. Bibliotekarz wybiera opcję dodania egzemplarza\n" +
+                "4.3.2. System prosi o podanie danych egzemplarza\n" +
+                "4.3.3. Bibliotekarz podaje dane egzemplarza i zatwierdza.\n" +
+                "4.3.4. System informuje o poprawnym dodaniu egzemplarza i prezentuje zaktualizowaną listę egzemplarzy.\n" +
+                "5. Bibliotekarz zatwierdza dodanie książki.\n" +
+                "6. System informuje o poprawnym dodaniu książki.\n", ScenarioQualityChecker.getScenarioTextified(mockScenario));
+    }
+
+    @Test
+    void scenarioSample_getScenarioTextifiedNoSystemActor() {
+        when(mockScenario.getSystemActor()).thenReturn(null);
+        assertEquals("Tytuł: Dodane książki\n" +
+                "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +
+                "\n" +
+                "1. Bibliotekarz wybiera opcje dodania nowej pozycji książkowej\n" +
+                "2. Wyświetla się formularz.\n" +
+                "3. Bibliotekarz podaje dane książki.\n" +
+                "4. IF Bibliotekarz pragnie dodać egzemplarze książki\n" +
+                "4.1. Bibliotekarz wybiera opcję definiowania egzemplarzy\n" +
+                "4.2. System prezentuje zdefiniowane egzemplarze\n" +
+                "4.3. FOR EACH egzemplarz:\n" +
+                "4.3.1. Bibliotekarz wybiera opcję dodania egzemplarza\n" +
+                "4.3.2. System prosi o podanie danych egzemplarza\n" +
+                "4.3.3. Bibliotekarz podaje dane egzemplarza i zatwierdza.\n" +
+                "4.3.4. System informuje o poprawnym dodaniu egzemplarza i prezentuje zaktualizowaną listę egzemplarzy.\n" +
+                "5. Bibliotekarz zatwierdza dodanie książki.\n" +
+                "6. System informuje o poprawnym dodaniu książki.\n", ScenarioQualityChecker.getScenarioTextified(mockScenario));
+    }
+
+    @Test
+    void scenarioSample_getScenarioTextifiedNoMainSubScenario() {
+        when(mockScenario.getMain()).thenReturn(null);
+        assertEquals("Tytuł: Dodane książki\n" +
+                "Aktorzy: Bibliotekarz Inny KtośTam TamKtoś\n" +
+                "Aktor systemowy: System\n" +
+                "\n", ScenarioQualityChecker.getScenarioTextified(mockScenario));
+    }
+
+    @Test
     void scenarioSample_getScenarioUpToLevel0()
     {
         assertThrows(Exception.class, () -> ScenarioQualityChecker.getScenarioUpToLevel(mockScenario, 0));
