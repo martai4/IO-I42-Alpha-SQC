@@ -16,12 +16,18 @@ import pl.put.poznan.checker.logic.visitor.base.Visitor;
  */
 public class ScenarioTextifier implements Visitor
 {
+    /**
+     * <i>Logger</i> dokumentujący pracę klasy.
+     */
     private static final Logger logger = LoggerFactory.getLogger(ScenarioTextifier.class);
 
     /**
      * @see ScenarioTextifier#getText()
      */
     private String text;
+    /**
+     * Aktualny prefix kroku w czasie przetwarzania.
+     */
     private String stepPrefix;
 
     /**
